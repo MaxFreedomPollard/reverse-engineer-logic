@@ -14,6 +14,7 @@ Instead of offering polite summaries or skipping uncomfortable subtext, `rel` tr
 Ships as:
 1. **Native macOS Universal App (`Reverse Engineer Logic.app`, Apple Silicon + Intel, macOS 13.0+)**: Standalone macOS app with zero Node.js requirement, Keychain-backed multi-provider LLM support, Draft V1 vs. V2 Comparator, and one-click MCP registration across all detected AI agents.
 2. **Unified CLI & MCP Server (`rel` / `rel mcp`)**: Works across macOS and Linux with the same multi-client architecture as [REA](https://github.com/morluto/rea).
+3. Just download it and ask your AI to install and use it. It needs no special permissions or anything.
 
 ---
 
