@@ -2,8 +2,7 @@
 
 Confused by some bullshit? Use this tool to discern the motivation and logic behind anything at all.
 
-Note: Cannot be usefully used with ChatGPT, which has too many inbuilt prejudices for this kind of tool. Works with most other LLMs at the date of publishing.
-
+Note: Cannot be usefully used with ChatGPT, which has too many inbuilt prejudices for this kind of tool. Works with all other major LLMs.
 ---
 
 ## Overview
