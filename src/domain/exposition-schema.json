@@ -1,0 +1,159 @@
+{
+  "type": "object",
+  "properties": {
+    "global_architecture": {
+      "type": "object",
+      "properties": {
+        "executive_subtext_translation": { "type": "string" },
+        "core_logical_architecture": { "type": "string" },
+        "actor_incentive_matrix": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "actor": { "type": "string" },
+              "stated_goal": { "type": "string" },
+              "revealed_incentives": { "type": "string" },
+              "core_fears_or_aversions": { "type": "string" },
+              "leverage_and_batna": { "type": "string" }
+            },
+            "required": ["actor", "stated_goal", "revealed_incentives", "core_fears_or_aversions", "leverage_and_batna"]
+          }
+        },
+        "syllogistic_macro_chain": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "strategic_response_playbook": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "strategy_name": { "type": "string" },
+              "when_to_use": { "type": "string" },
+              "exact_move_or_script": { "type": "string" },
+              "expected_counter_reaction": { "type": "string" }
+            },
+            "required": ["strategy_name", "when_to_use", "exact_move_or_script", "expected_counter_reaction"]
+          }
+        }
+      },
+      "required": [
+        "executive_subtext_translation",
+        "core_logical_architecture",
+        "actor_incentive_matrix",
+        "syllogistic_macro_chain",
+        "strategic_response_playbook"
+      ]
+    },
+    "unit_expositions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "unit_id": { "type": "string" },
+          "literal_surface": { "type": "string" },
+          "operational_function": { "type": "string" },
+          "logic_chain": { "type": "array", "items": { "type": "string" } },
+          "hidden_premises": { "type": "array", "items": { "type": "string" } },
+          "motivational_stack": {
+            "type": "object",
+            "properties": {
+              "surface_motive": { "type": "string" },
+              "tactical_motive": { "type": "string" },
+              "core_self_interest": { "type": "string" },
+              "ego_or_face_protection": { "type": "string" }
+            },
+            "required": ["surface_motive", "tactical_motive", "core_self_interest", "ego_or_face_protection"]
+          },
+          "word_choice_forensics": { "type": "string" },
+          "counterfactual_translation": { "type": "string" },
+          "hypotheses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string" },
+                "label": { "type": "string" },
+                "probability": { "type": "number" },
+                "rationale": { "type": "string" }
+              },
+              "required": ["id", "label", "probability", "rationale"]
+            }
+          },
+          "diagnostic_probe": {
+            "type": "object",
+            "properties": {
+              "probe_question_or_action": { "type": "string" },
+              "if_h1_true_expect": { "type": "string" },
+              "if_h2_true_expect": { "type": "string" }
+            },
+            "required": ["probe_question_or_action", "if_h1_true_expect", "if_h2_true_expect"]
+          }
+        },
+        "required": [
+          "unit_id",
+          "literal_surface",
+          "operational_function",
+          "logic_chain",
+          "hidden_premises",
+          "motivational_stack",
+          "word_choice_forensics",
+          "counterfactual_translation",
+          "hypotheses",
+          "diagnostic_probe"
+        ]
+      }
+    },
+    "omission_expositions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "omission_id": { "type": "string" },
+          "why_expected": { "type": "string" },
+          "strategic_function_of_silence": { "type": "string" },
+          "hypotheses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string" },
+                "label": { "type": "string" },
+                "probability": { "type": "number" },
+                "rationale": { "type": "string" }
+              },
+              "required": ["id", "label", "probability", "rationale"]
+            }
+          },
+          "diagnostic_probe": { "type": "string" }
+        },
+        "required": ["omission_id", "why_expected", "strategic_function_of_silence", "hypotheses", "diagnostic_probe"]
+      }
+    },
+    "unresolved_unknowns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question": { "type": "string" },
+          "severity": { "type": "string" },
+          "domain": { "type": "string" },
+          "recommended_probes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "operation": { "type": "string" },
+                "rationale": { "type": "string" }
+              },
+              "required": ["operation", "rationale"]
+            }
+          }
+        },
+        "required": ["question", "severity", "domain", "recommended_probes"]
+      }
+    }
+  },
+  "required": ["global_architecture", "unit_expositions", "omission_expositions", "unresolved_unknowns"]
+}

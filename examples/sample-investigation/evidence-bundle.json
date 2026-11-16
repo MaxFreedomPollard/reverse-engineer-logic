@@ -1,0 +1,1027 @@
+{
+  "bundle_format": "rel.investigation-bundle.v1",
+  "created_at": "2026-11-16T08:01:27.101Z",
+  "subject": {
+    "subject_id": "sub_d6812c952947933aa5ffbdaa7758888ea2f7413fb72a361cf79f72d9244651e0",
+    "name": "post-demo-platform-vp-reply",
+    "kind": "message-or-statement",
+    "digest": {
+      "sha256": "d6812c952947933aa5ffbdaa7758888ea2f7413fb72a361cf79f72d9244651e0"
+    },
+    "char_length": 418,
+    "context": "VP of Platform at a potential acquirer/partner writing to a startup founder 48 hours after an executive product demo."
+  },
+  "raw_text": "We were blown away by your live demo on Tuesday, though our product committee feels integrating external partners before Q2 might create overlap with an internal initiative that was recently prioritized. Obviously we value our relationship and would hate to lose momentum, so if you can share your benchmark suite and latency numbers by Friday EOD, we can explore a pilot structure down the road when bandwidth allows.",
+  "decompilation": {
+    "subject_id": "sub_d6812c952947933aa5ffbdaa7758888ea2f7413fb72a361cf79f72d9244651e0",
+    "subject_kind": "message-or-statement",
+    "statistics": {
+      "unit_count": 2,
+      "omission_count": 3,
+      "total_obligations_generated": 5,
+      "total_micro_signals": 10,
+      "signal_histogram": {
+        "NUMERIC_OR_TEMPORAL_ANCHOR": 2,
+        "ADVERSATIVE_PIVOT": 1,
+        "EXTERNALIZED_BLOCKER": 1,
+        "EPISTEMIC_HEDGE": 1,
+        "PRESUPPOSITION_TRIGGER": 1,
+        "CONDITIONAL_QUID_PRO_QUO": 1,
+        "VAGUE_COMMITMENT_HORIZON": 3
+      },
+      "detected_speakers": [],
+      "adversative_pivot_units": [
+        "S01"
+      ],
+      "hedged_units": [
+        "S01"
+      ]
+    },
+    "units": [
+      {
+        "unit_id": "S01",
+        "paragraph_index": 1,
+        "sentence_index": 1,
+        "kind": "statement-unit",
+        "speaker": null,
+        "text": "We were blown away by your live demo on Tuesday, though our product committee feels integrating external partners before Q2 might create overlap with an internal initiative that was recently prioritized.",
+        "span": {
+          "start": 0,
+          "end": 203
+        },
+        "word_count": 31,
+        "clauses": [
+          {
+            "role": "pre-pivot-concession-or-cushion",
+            "connector": null,
+            "text": "We were blown away by your live demo on Tuesday"
+          },
+          {
+            "role": "post-pivot-operational-payload",
+            "connector": "though",
+            "text": "though our product committee feels integrating external partners before Q2 might create overlap with an internal initiative that was recently prioritized."
+          }
+        ],
+        "speech_acts": [
+          "assertive-framing-claim"
+        ],
+        "agency_and_commitment": {
+          "first_person_singular_count": 0,
+          "collective_we_count": 2,
+          "second_person_target_count": 1,
+          "passive_erasure": false,
+          "commitment_profile": "soft-nonbinding-optionality"
+        },
+        "signals": [
+          {
+            "code": "NUMERIC_OR_TEMPORAL_ANCHOR",
+            "label": "Concrete Quantitative / Date Anchor",
+            "category": "hard-specification",
+            "match": "Tuesday",
+            "span": {
+              "start": 40,
+              "end": 47
+            },
+            "mechanic": "Introduces hard falsifiable coordinates (price, percentage, deadline) that anchor bargaining space or expose asymmetry against vague surrounding promises."
+          },
+          {
+            "code": "ADVERSATIVE_PIVOT",
+            "label": "Adversative Pivot (Pre-Pivot Cushion -> Post-Pivot Payload)",
+            "category": "framing-pivot",
+            "match": "though",
+            "span": {
+              "start": 49,
+              "end": 55
+            },
+            "mechanic": "Splits the sentence into a face-saving or rapport-preserving concession before the pivot and the speaker's actual operational priority after the pivot."
+          },
+          {
+            "code": "EXTERNALIZED_BLOCKER",
+            "label": "Externalized Authority / Bad-Cop Shield",
+            "category": "power-and-leverage",
+            "match": "committee",
+            "span": {
+              "start": 68,
+              "end": 77
+            },
+            "mechanic": "Preserves interpersonal warmth ('I am on your side') while attributing a refusal or concession demand to an unreachable off-stage entity."
+          },
+          {
+            "code": "EPISTEMIC_HEDGE",
+            "label": "Epistemic Hedge / Plausible Deniability",
+            "category": "optionality-preservation",
+            "match": "might",
+            "span": {
+              "start": 124,
+              "end": 129
+            },
+            "mechanic": "Lowers truth-commitment cost so the actor can advance a claim or insinuation today while retaining an exit ramp if challenged tomorrow."
+          }
+        ]
+      },
+      {
+        "unit_id": "S02",
+        "paragraph_index": 1,
+        "sentence_index": 2,
+        "kind": "statement-unit",
+        "speaker": null,
+        "text": "Obviously we value our relationship and would hate to lose momentum, so if you can share your benchmark suite and latency numbers by Friday EOD, we can explore a pilot structure down the road when bandwidth allows.",
+        "span": {
+          "start": 204,
+          "end": 418
+        },
+        "word_count": 37,
+        "clauses": [
+          {
+            "role": "antecedent-or-main-clause",
+            "connector": null,
+            "text": "Obviously we value our relationship and would hate to lose momentum, so"
+          },
+          {
+            "role": "subordinate-condition-or-warrant",
+            "connector": "if",
+            "text": "if you can share your benchmark suite and latency numbers by Friday EOD, we can explore a pilot structure down the road when bandwidth allows."
+          }
+        ],
+        "speech_acts": [
+          "directive-ask-or-probe",
+          "commissive-promise-or-punt",
+          "expressive-rapport-or-facework"
+        ],
+        "agency_and_commitment": {
+          "first_person_singular_count": 0,
+          "collective_we_count": 3,
+          "second_person_target_count": 2,
+          "passive_erasure": false,
+          "commitment_profile": "soft-nonbinding-optionality"
+        },
+        "signals": [
+          {
+            "code": "PRESUPPOSITION_TRIGGER",
+            "label": "Smuggled Presupposition",
+            "category": "hidden-premise",
+            "match": "Obviously",
+            "span": {
+              "start": 204,
+              "end": 213
+            },
+            "mechanic": "Packages a contested assumption as background common knowledge rather than an open claim, forcing the listener to either challenge the frame explicitly or swallow the premise."
+          },
+          {
+            "code": "CONDITIONAL_QUID_PRO_QUO",
+            "label": "Conditional Gate / Leverage Coupling",
+            "category": "bargaining-structure",
+            "match": "if",
+            "span": {
+              "start": 276,
+              "end": 278
+            },
+            "mechanic": "Links a desired outcome to a prerequisite concession, revealing the speaker's true exchange function."
+          },
+          {
+            "code": "NUMERIC_OR_TEMPORAL_ANCHOR",
+            "label": "Concrete Quantitative / Date Anchor",
+            "category": "hard-specification",
+            "match": "Friday",
+            "span": {
+              "start": 337,
+              "end": 343
+            },
+            "mechanic": "Introduces hard falsifiable coordinates (price, percentage, deadline) that anchor bargaining space or expose asymmetry against vague surrounding promises."
+          },
+          {
+            "code": "VAGUE_COMMITMENT_HORIZON",
+            "label": "Non-Binding / Elastic Commitment",
+            "category": "commitment-asymmetry",
+            "match": "explore",
+            "span": {
+              "start": 356,
+              "end": 363
+            },
+            "mechanic": "Simulates forward motion and goodwill while binding zero calendar dates, deliverables, or enforceable obligations."
+          },
+          {
+            "code": "VAGUE_COMMITMENT_HORIZON",
+            "label": "Non-Binding / Elastic Commitment",
+            "category": "commitment-asymmetry",
+            "match": "down the road",
+            "span": {
+              "start": 382,
+              "end": 395
+            },
+            "mechanic": "Simulates forward motion and goodwill while binding zero calendar dates, deliverables, or enforceable obligations."
+          },
+          {
+            "code": "VAGUE_COMMITMENT_HORIZON",
+            "label": "Non-Binding / Elastic Commitment",
+            "category": "commitment-asymmetry",
+            "match": "when bandwidth allows",
+            "span": {
+              "start": 396,
+              "end": 417
+            },
+            "mechanic": "Simulates forward motion and goodwill while binding zero calendar dates, deliverables, or enforceable obligations."
+          }
+        ]
+      }
+    ],
+    "conspicuous_omissions": [
+      {
+        "omission_id": "OM01",
+        "slot": "MISSING_CONCRETE_VERIFIABLE_HORIZON",
+        "title": "Absence of Concrete Dates, Metrics, or Acceptance Criteria",
+        "trigger_observation": "Commitments or next steps are framed using elastic horizons ('soon', 'explore', 'when bandwidth allows', or unanchored future verbs) without a falsifiable deadline or numeric threshold."
+      },
+      {
+        "omission_id": "OM02",
+        "slot": "MISSING_DECISION_OWNER_AND_INCENTIVE",
+        "title": "Omitted Named Decision-Maker & Real Internal Tradeoff",
+        "trigger_observation": "Refusals, delays, or constraints are attributed to passive events or impersonal entities ('policy', 'bandwidth', 'it was decided') while omitting who actually holds veto power and what would change their vote."
+      },
+      {
+        "omission_id": "OM03",
+        "slot": "MISSING_RECIPROCAL_DOWNSIDE_OR_CONCESSION",
+        "title": "One-Way Risk/Effort Ask Without Reciprocal Binding Commitment",
+        "trigger_observation": "The actor requests information, action, concession, or patience from the counterpart while keeping their own reciprocal commitment non-binding or unstated."
+      }
+    ]
+  },
+  "obligation_ledger": {
+    "ledger_id": "obl_ledger_ac2a380a0f0f61dcb3befdcd6dc78e5aaf1c610f2ddaf0ffdc8912bdc29ae7eb",
+    "subject_sha256": "d6812c952947933aa5ffbdaa7758888ea2f7413fb72a361cf79f72d9244651e0",
+    "total_obligations": 5,
+    "sentence_obligations": 2,
+    "omission_obligations": 3,
+    "obligations": [
+      {
+        "obligation_id": "obl_29c19fedb7ba83398603d2c7336dc401ca762b83398adce7059f80c4c6a06d7f",
+        "unit_id": "S01",
+        "unit_kind": "statement-unit",
+        "anchor_text": "We were blown away by your live demo on Tuesday, though our product committee feels integrating external partners before Q2 might create overlap with an internal initiative that was recently prioritized.",
+        "span": {
+          "start": 0,
+          "end": 203
+        },
+        "required": true,
+        "required_dimensions": [
+          "surface_vs_operational_function",
+          "logic_chain_and_hidden_premises",
+          "motivational_stack",
+          "word_choice_and_counterfactual",
+          "competing_hypotheses_and_falsifier"
+        ],
+        "detected_micro_signals": [
+          "NUMERIC_OR_TEMPORAL_ANCHOR",
+          "ADVERSATIVE_PIVOT",
+          "EXTERNALIZED_BLOCKER",
+          "EPISTEMIC_HEDGE"
+        ],
+        "status": "verified",
+        "fulfilling_evidence_ids": [
+          "ev_aa53c7629d32ac4d6ff777e311d230c47cc8aa636a1425fe47523ac179f8e889"
+        ],
+        "source_evidence_id": "ev_84758ef53adce294d59f795e7e60ebb82e0197a96769d5e9c83a11cca85dd5f3"
+      },
+      {
+        "obligation_id": "obl_8306324b2184993c686881ae65479ec02a1662b56167d15b3573ee9d34555625",
+        "unit_id": "S02",
+        "unit_kind": "statement-unit",
+        "anchor_text": "Obviously we value our relationship and would hate to lose momentum, so if you can share your benchmark suite and latency numbers by Friday EOD, we can explore a pilot structure down the road when bandwidth allows.",
+        "span": {
+          "start": 204,
+          "end": 418
+        },
+        "required": true,
+        "required_dimensions": [
+          "surface_vs_operational_function",
+          "logic_chain_and_hidden_premises",
+          "motivational_stack",
+          "word_choice_and_counterfactual",
+          "competing_hypotheses_and_falsifier"
+        ],
+        "detected_micro_signals": [
+          "PRESUPPOSITION_TRIGGER",
+          "CONDITIONAL_QUID_PRO_QUO",
+          "NUMERIC_OR_TEMPORAL_ANCHOR",
+          "VAGUE_COMMITMENT_HORIZON",
+          "VAGUE_COMMITMENT_HORIZON",
+          "VAGUE_COMMITMENT_HORIZON"
+        ],
+        "status": "verified",
+        "fulfilling_evidence_ids": [
+          "ev_aa53c7629d32ac4d6ff777e311d230c47cc8aa636a1425fe47523ac179f8e889"
+        ],
+        "source_evidence_id": "ev_84758ef53adce294d59f795e7e60ebb82e0197a96769d5e9c83a11cca85dd5f3"
+      },
+      {
+        "obligation_id": "obl_7b565edc31769a85bc84c9fa2903f7a243328511153c42bc8734d616b69efd11",
+        "unit_id": "OM01",
+        "unit_kind": "conspicuous-omission",
+        "anchor_text": "[OMISSION: Absence of Concrete Dates, Metrics, or Acceptance Criteria]",
+        "span": null,
+        "required": true,
+        "required_dimensions": [
+          "expected_in_candid_baseline",
+          "strategic_benefit_of_silence",
+          "motivational_hypotheses",
+          "diagnostic_probe"
+        ],
+        "detected_micro_signals": [
+          "MISSING_CONCRETE_VERIFIABLE_HORIZON"
+        ],
+        "status": "verified",
+        "fulfilling_evidence_ids": [
+          "ev_aa53c7629d32ac4d6ff777e311d230c47cc8aa636a1425fe47523ac179f8e889"
+        ],
+        "source_evidence_id": "ev_84758ef53adce294d59f795e7e60ebb82e0197a96769d5e9c83a11cca85dd5f3"
+      },
+      {
+        "obligation_id": "obl_643d43729c1e616bd7f6f5b9b261bc61ce480cd304c1627f4464c029c0417535",
+        "unit_id": "OM02",
+        "unit_kind": "conspicuous-omission",
+        "anchor_text": "[OMISSION: Omitted Named Decision-Maker & Real Internal Tradeoff]",
+        "span": null,
+        "required": true,
+        "required_dimensions": [
+          "expected_in_candid_baseline",
+          "strategic_benefit_of_silence",
+          "motivational_hypotheses",
+          "diagnostic_probe"
+        ],
+        "detected_micro_signals": [
+          "MISSING_DECISION_OWNER_AND_INCENTIVE"
+        ],
+        "status": "verified",
+        "fulfilling_evidence_ids": [
+          "ev_aa53c7629d32ac4d6ff777e311d230c47cc8aa636a1425fe47523ac179f8e889"
+        ],
+        "source_evidence_id": "ev_84758ef53adce294d59f795e7e60ebb82e0197a96769d5e9c83a11cca85dd5f3"
+      },
+      {
+        "obligation_id": "obl_cae3a149bb20515616a1fb23d96b9320a5f10e7cec0010e7f04808e22445e156",
+        "unit_id": "OM03",
+        "unit_kind": "conspicuous-omission",
+        "anchor_text": "[OMISSION: One-Way Risk/Effort Ask Without Reciprocal Binding Commitment]",
+        "span": null,
+        "required": true,
+        "required_dimensions": [
+          "expected_in_candid_baseline",
+          "strategic_benefit_of_silence",
+          "motivational_hypotheses",
+          "diagnostic_probe"
+        ],
+        "detected_micro_signals": [
+          "MISSING_RECIPROCAL_DOWNSIDE_OR_CONCESSION"
+        ],
+        "status": "verified",
+        "fulfilling_evidence_ids": [
+          "ev_aa53c7629d32ac4d6ff777e311d230c47cc8aa636a1425fe47523ac179f8e889"
+        ],
+        "source_evidence_id": "ev_84758ef53adce294d59f795e7e60ebb82e0197a96769d5e9c83a11cca85dd5f3"
+      }
+    ]
+  },
+  "completion_ledger": {
+    "ledger_id": "ecl_b3b6c0dc214db84b4b3baa6712d87250938d4b59ed4bfaa4cc0cecfa05687fa5",
+    "records": [
+      {
+        "claim_id": "OM01",
+        "obligation_id": "obl_7b565edc31769a85bc84c9fa2903f7a243328511153c42bc8734d616b69efd11",
+        "status": "pass",
+        "evidence_ids": [
+          "ev_84758ef53adce294d59f795e7e60ebb82e0197a96769d5e9c83a11cca85dd5f3",
+          "ev_aa53c7629d32ac4d6ff777e311d230c47cc8aa636a1425fe47523ac179f8e889",
+          "ev_d4a95d7ad371d3301a6ddbb46c830ab1b11e9dfcd957afe7ba390e98c22aaad1"
+        ]
+      },
+      {
+        "claim_id": "OM02",
+        "obligation_id": "obl_643d43729c1e616bd7f6f5b9b261bc61ce480cd304c1627f4464c029c0417535",
+        "status": "pass",
+        "evidence_ids": [
+          "ev_84758ef53adce294d59f795e7e60ebb82e0197a96769d5e9c83a11cca85dd5f3",
+          "ev_aa53c7629d32ac4d6ff777e311d230c47cc8aa636a1425fe47523ac179f8e889",
+          "ev_d4a95d7ad371d3301a6ddbb46c830ab1b11e9dfcd957afe7ba390e98c22aaad1"
+        ]
+      },
+      {
+        "claim_id": "OM03",
+        "obligation_id": "obl_cae3a149bb20515616a1fb23d96b9320a5f10e7cec0010e7f04808e22445e156",
+        "status": "pass",
+        "evidence_ids": [
+          "ev_84758ef53adce294d59f795e7e60ebb82e0197a96769d5e9c83a11cca85dd5f3",
+          "ev_aa53c7629d32ac4d6ff777e311d230c47cc8aa636a1425fe47523ac179f8e889",
+          "ev_d4a95d7ad371d3301a6ddbb46c830ab1b11e9dfcd957afe7ba390e98c22aaad1"
+        ]
+      },
+      {
+        "claim_id": "S01",
+        "obligation_id": "obl_29c19fedb7ba83398603d2c7336dc401ca762b83398adce7059f80c4c6a06d7f",
+        "status": "pass",
+        "evidence_ids": [
+          "ev_84758ef53adce294d59f795e7e60ebb82e0197a96769d5e9c83a11cca85dd5f3",
+          "ev_aa53c7629d32ac4d6ff777e311d230c47cc8aa636a1425fe47523ac179f8e889",
+          "ev_d4a95d7ad371d3301a6ddbb46c830ab1b11e9dfcd957afe7ba390e98c22aaad1"
+        ]
+      },
+      {
+        "claim_id": "S02",
+        "obligation_id": "obl_8306324b2184993c686881ae65479ec02a1662b56167d15b3573ee9d34555625",
+        "status": "pass",
+        "evidence_ids": [
+          "ev_84758ef53adce294d59f795e7e60ebb82e0197a96769d5e9c83a11cca85dd5f3",
+          "ev_aa53c7629d32ac4d6ff777e311d230c47cc8aa636a1425fe47523ac179f8e889",
+          "ev_d4a95d7ad371d3301a6ddbb46c830ab1b11e9dfcd957afe7ba390e98c22aaad1"
+        ]
+      }
+    ],
+    "summary": {
+      "total": 5,
+      "pass": 5,
+      "fail": 0,
+      "unsupported": 0,
+      "truncated": 0,
+      "unknown": 0,
+      "coverage_ratio": 1,
+      "complete": true
+    },
+    "diagnostics": []
+  },
+  "exposition": {
+    "provider_used": {
+      "id": "mcp-session",
+      "name": "MCP Agent-Driven Investigation",
+      "version": "1.0.0"
+    },
+    "authority": "analyst-inference",
+    "confidence": "inferred",
+    "global_architecture": {
+      "executive_subtext_translation": "Plain translation: 'Your demo proved your technology works well enough to threaten or benchmark our internal build, so we are freezing any partnership deal until at least Q2 while keeping you warm enough to hand over your proprietary benchmark suite and latency numbers by Friday for free.' Notice the stark exchange asymmetry: you are given a hard 72-hour deadline (Friday EOD) to surrender competitive ground-truth benchmarks, while their reciprocal promise ('explore a pilot structure down the road when bandwidth allows') contains three stacked non-binding escape hatches.",
+      "core_logical_architecture": "A two-sentence Asymmetric Extraction Funnel. Sentence S01 deploys enthusiastic ego-validation ('blown away') to lower the founder's competitive guard, immediately pivots via 'though' to an off-stage veto ('our product committee'), and introduces a recently 'prioritized' internal competitor in passive voice so the VP looks sympathetic rather than adversarial. Sentence S02 then uses presupposition ('Obviously we value our relationship') and loss-aversion ('hate to lose momentum') as the bridge to extract concrete IP/benchmarks by a hard deadline in exchange for a zero-commitment future maybe.",
+      "actor_incentive_matrix": [
+        {
+          "actor": "VP of Platform (Sender)",
+          "stated_goal": "Preserve partnership momentum while respecting Q2 roadmap sequencing.",
+          "revealed_incentives": "Harvest external latency targets and test harnesses to calibrate their own internal team's build, keep optionality to partner or acquire later if their internal build slips, and commit $0 budget today.",
+          "core_fears_or_aversions": "Having the startup sign an exclusive deal with a rival before Q2, or admitting openly that their internal engineering team is building a competing feature.",
+          "leverage_and_batna": "Distribution scale and perceived partnership prestige; BATNA is building internally using your latency numbers as their acceptance bar."
+        },
+        {
+          "actor": "Startup Founder (Recipient)",
+          "stated_goal": "Convert executive demo excitement into a paid commercial pilot or strategic deal.",
+          "revealed_incentives": "Protect proprietary evaluation suites and target benchmarks unless tied to a paid, mutually scoped, non-competing commercial commitment.",
+          "core_fears_or_aversions": "Looking uncooperative or losing a marquee logo by pushing back on a Friday data request.",
+          "leverage_and_batna": "Working, demonstrated technology today (versus the big company's unshipped Q2 internal initiative) and freedom to partner with their direct competitor."
+        }
+      ],
+      "syllogistic_macro_chain": [
+        "Step 1 (Flattery Anesthetic): Praise Tuesday's demo lavishly so the founder reads the room as friendly rather than competitive.",
+        "Step 2 (Externalized Freeze): Blame an off-stage 'product committee' and an unnamed 'internal initiative' to take Q1 budget/contracting off the table without personal friction.",
+        "Step 3 (Smuggled Premise): Presuppose ('Obviously') that sharing internal benchmarks without a commercial agreement is how 'momentum' is preserved.",
+        "Step 4 (Asymmetric Close): Trade a vague, undated 'explore down the road' for the founder's concrete latency benchmarks by Friday EOD."
+      ],
+      "strategic_response_playbook": [
+        {
+          "strategy_name": "Flip the Asymmetry: Clarify Overlap Before Sharing Benchmarks",
+          "when_to_use": "Default best move whenever 'internal initiative overlap' is paired with a one-way technical data ask.",
+          "exact_move_or_script": "Glad Tuesday's demo resonated with the team. Before we share detailed benchmark harnesses, let's do a 15-minute scope check with the product committee lead on how your internal initiative is bounded so we know whether we are complementary or overlapping. Once we define mutual pilot success criteria and Q2 budget ownership, we will gladly run joint benchmarks.",
+          "expected_counter_reaction": "Genuine partners agree to clarify scope boundaries; competitive intelligence harvesters dodge the committee intro and press solely for the raw numbers."
+        },
+        {
+          "strategy_name": "High-Level Public Summary Only (Zero Harness / Zero Raw Tail Latencies)",
+          "when_to_use": "If you want to stay polite without handing their internal engineering team a spec sheet.",
+          "exact_move_or_script": "Happy to keep things warm for Q2 - attached is our standard 1-page public datasheet. When bandwidth opens up on your side to lock a paid 30-day pilot with mutual NDA/non-compete guardrails, reach back out and we can dive into deep benchmarking.",
+          "expected_counter_reaction": "Neutralizes the Friday EOD urgency trap while signaling high confidence and strong outside demand."
+        }
+      ]
+    },
+    "unit_expositions": [
+      {
+        "unit_id": "S01",
+        "literal_surface": "Claims the team loved Tuesday's demo, but the product committee worries pre-Q2 partner integration could overlap with a newly prioritized internal project.",
+        "operational_function": "Performs three simultaneous tactical jobs in 31 words: (1) delivers high-dopamine praise ('blown away') so the founder stays emotionally invested; (2) slams the door on near-term revenue ('before Q2') via an off-stage committee; and (3) quietly admits competitive overlap while framing that admission in passive voice ('that was recently prioritized') so nobody in the room owns the decision.",
+        "logic_chain": [
+          "Explicit praise: 'We were blown away by your live demo on Tuesday'",
+          "Adversative pivot ('though'): Cancels commercial follow-through of the praise",
+          "Externalized constraint: 'product committee feels ... might create overlap with an internal initiative'",
+          "Intended conclusion: Accept a multi-month freeze without viewing the sender as a competitor."
+        ],
+        "hidden_premises": [
+          "Assumes the VP had no role in prioritizing the competing internal initiative or in inviting you to demo despite knowing that initiative existed.",
+          "Assumes 'overlap' is a temporary Q1 scheduling nuisance rather than a structural build-vs-buy conflict that makes sharing IP dangerous."
+        ],
+        "motivational_stack": {
+          "surface_motive": "Give polite, encouraging feedback after a strong technical demo while explaining internal roadmap constraints.",
+          "tactical_motive": "Keep the founder friendly and talking while removing any expectation of a Q1 contract.",
+          "core_self_interest": "Preserve build-vs-buy optionality: let the internal team try to replicate what they saw on Tuesday while keeping the startup on ice as insurance.",
+          "ego_or_face_protection": "Avoid looking like they invited a startup in just to study its product by blaming 'our product committee' and passive 'was recently prioritized'."
+        },
+        "word_choice_forensics": "'blown away' maximizes emotional warmth at zero dollar cost; 'though' softens the adversative blow compared to a blunt 'but'; 'product committee feels' diffuses accountability across a faceless group; 'might create overlap' hedges an active competitive collision as a hypothetical possibility; 'was recently prioritized' uses agentless passive voice to hide who funded the competing internal build and when.",
+        "counterfactual_translation": "Candid unhedged version: 'Your demo showed us how you solved X, and we are currently building our own internal version for Q1, so we are not buying yours unless ours fails in Q2.'",
+        "hypotheses": [
+          {
+            "id": "H1",
+            "label": "Build-vs-Buy Hedging & Competitive Benchmarking",
+            "probability": 0.65,
+            "rationale": "Combining 'overlap with an internal initiative' in S01 with an immediate request for your benchmark suite and latency numbers in S02 is the textbook signature of benchmarking an internal build against a startup."
+          },
+          {
+            "id": "H2",
+            "label": "Genuine Internal Politics / Turf Pushback After Demo",
+            "probability": 0.25,
+            "rationale": "The VP genuinely liked the demo, but an internal engineering director threatened by external tech lobbied the product committee afterward to protect their team's headcount."
+          },
+          {
+            "id": "H3",
+            "label": "Budget Freeze Disguised as Roadmap Overlap",
+            "probability": 0.1,
+            "rationale": "Q1 vendor budget is exhausted, and 'internal overlap' sounds more strategic than admitting lack of budget authority."
+          }
+        ],
+        "diagnostic_probe": {
+          "probe_question_or_action": "Ask directly: 'Which exact layer is your internal initiative building, and which adjacent layer would remain partner-owned in Q2 if we worked together?'",
+          "if_h1_true_expect": "Vague, evasive boundary definitions because their internal project targets your exact core product.",
+          "if_h2_true_expect": "Specific architectural boundary explanation and candid admission of who internally needs convincing."
+        }
+      },
+      {
+        "unit_id": "S02",
+        "literal_surface": "Asserts they value the relationship and want to keep momentum, asking for your benchmark suite and latency numbers by Friday EOD so they can explore a pilot later when bandwidth allows.",
+        "operational_function": "Executes a classic Asymmetric Quid-Pro-Quo: pairs a hard, immediate, high-value deliverable from you ('benchmark suite and latency numbers by Friday EOD') with a triple-hedged, zero-cost non-promise from them ('explore' + 'down the road' + 'when bandwidth allows'), glued together by guilt/loss-aversion ('hate to lose momentum').",
+        "logic_chain": [
+          "Smuggled premise ('Obviously'): Our relationship is mutually aligned despite the competing internal project in S01.",
+          "Loss-aversion trigger: Refusing to send data = 'losing momentum'.",
+          "Hard inbound ask: Deliver benchmark suite + latency numbers by Friday EOD.",
+          "Soft outbound carrot: We will 'explore' a pilot 'down the road' 'when bandwidth allows'."
+        ],
+        "hidden_premises": [
+          "Presupposes ('Obviously') that an uncontracted prospect building an overlapping internal tool is still a safe 'relationship' to hand raw evaluation suites to.",
+          "Assumes handing over benchmarks accelerates a pilot, rather than removing their remaining need to engage you."
+        ],
+        "motivational_stack": {
+          "surface_motive": "Keep technical evaluation moving asynchronously until Q2 bandwidth opens up.",
+          "tactical_motive": "Impose an artificial Friday EOD deadline so the founder rushes into compliance before consulting advisors or questioning the S01 overlap.",
+          "core_self_interest": "Acquire your benchmark methodology (which often takes months of domain engineering to curate) and exact p50/p99 latency targets to grade their internal initiative.",
+          "ego_or_face_protection": "Frame an extractive one-way data request as a favor to the startup ('hate to lose momentum')."
+        },
+        "word_choice_forensics": "'Obviously' smuggles trust right after revealing a conflict of interest; 'benchmark suite' asks not just for marketing numbers but for the test methodology itself; 'Friday EOD' compresses deliberation time onto a crisp deadline; 'explore' + 'down the road' + 'when bandwidth allows' stacks three consecutive non-binding hedges so they owe literally nothing after Friday.",
+        "counterfactual_translation": "Candid unhedged version: 'Send us your test suite and exact latency targets before the weekend so our internal team knows what bar to beat; we make zero commitment to ever run a pilot.'",
+        "hypotheses": [
+          {
+            "id": "H1",
+            "label": "Target-Harvesting for Internal Engineering Team",
+            "probability": 0.62,
+            "rationale": "Asking for the 'benchmark suite' (not just pricing or security docs) by Friday EOD while freezing commercial talks until Q2 primarily benefits an active internal build."
+          },
+          {
+            "id": "H2",
+            "label": "Champion Trying to Build Internal Ammo Against 'Not-Invented-Here' Skeptics",
+            "probability": 0.3,
+            "rationale": "If H2 from S01 holds, the VP wants your latency numbers by Friday's committee meeting to prove the internal team cannot match your speed."
+          },
+          {
+            "id": "H3",
+            "label": "Habitual Corporate Stall Template",
+            "probability": 0.08,
+            "rationale": "Reflexive request for homework to end the thread politely without immediate intent to use it."
+          }
+        ],
+        "diagnostic_probe": {
+          "probe_question_or_action": "Reply: 'Are the numbers for a specific Friday committee comparison against the internal build? If we beat X ms latency on a live blind run together, does that unlock a Q1 paid pilot?'",
+          "if_h1_true_expect": "They will deny any Q1 path exists regardless of how good the numbers are, confirming there is zero upside in sending the suite now.",
+          "if_h2_true_expect": "Your champion will say 'Yes - if I can show <X ms on Friday, I can push back on building this in-house.'"
+        }
+      }
+    ],
+    "omission_expositions": [
+      {
+        "omission_id": "OM01",
+        "why_expected": "A serious enterprise buyer proposing a Q2 pilot normally states concrete Q2 planning dates, pilot success thresholds, or budget ranges.",
+        "strategic_function_of_silence": "Omitting any date or metric behind 'down the road when bandwidth allows' ensures you can never hold them to a follow-up milestone once you hand over the Friday deliverables.",
+        "hypotheses": [
+          {
+            "id": "H1",
+            "label": "No Approved Pilot Track Exists",
+            "probability": 0.7,
+            "rationale": "Triple-stacked temporal vagueness almost always signals zero allocated Q2 pilot slot."
+          },
+          {
+            "id": "H2",
+            "label": "Q2 Planning Has Not Started Yet",
+            "probability": 0.3,
+            "rationale": "Roadmap is genuinely fluid, though they still want free optionality."
+          }
+        ],
+        "diagnostic_probe": "Ask: 'What exact date does Q2 pilot scoping lock, and what latency threshold turns exploration into a signed pilot?'"
+      },
+      {
+        "omission_id": "OM02",
+        "why_expected": "When an internal committee or overlapping project blocks a partnership, a transparent partner names the executive sponsor and clarifies the architectural boundary.",
+        "strategic_function_of_silence": "Keeping 'product committee' and 'internal initiative' anonymous prevents you from gauging how far along their competing build is or speaking directly to the decision owner.",
+        "hypotheses": [
+          {
+            "id": "H1",
+            "label": "Direct Competitive Overlap Shielding",
+            "probability": 0.68,
+            "rationale": "Naming the internal initiative would reveal immediately that it replicates your core product."
+          },
+          {
+            "id": "H2",
+            "label": "Standard Corporate Confidentiality",
+            "probability": 0.32,
+            "rationale": "Large companies routinely avoid naming unannounced internal projects."
+          }
+        ],
+        "diagnostic_probe": "Ask who chairs the product committee review and whether the internal initiative is an application consumer of your layer or a direct substitute."
+      },
+      {
+        "omission_id": "OM03",
+        "why_expected": "Asking a external company for proprietary benchmark suites on a 48-hour deadline normally comes with a mutual NDA/non-use clause or reciprocal pilot commitment.",
+        "strategic_function_of_silence": "By making no reciprocal commitment and offering no non-use boundary, anything you email on Friday enters their organization unencumbered.",
+        "hypotheses": [
+          {
+            "id": "H1",
+            "label": "Free Optionality & Zero-Cost Intelligence",
+            "probability": 0.65,
+            "rationale": "Maximizes information gain with zero legal or commercial obligation."
+          },
+          {
+            "id": "H2",
+            "label": "Unthinking Buyer Leverage",
+            "probability": 0.35,
+            "rationale": "Large buyers are conditioned to ask startups for unilateral homework without realizing the IP risk."
+          }
+        ],
+        "diagnostic_probe": "Require a mutual evaluation agreement with explicit non-benchmarking/non-competing-build terms + a locked pilot decision date before sharing any test harness."
+      }
+    ]
+  },
+  "unknowns": [
+    {
+      "unknown_id": "unk_74f26bbc1f274aaff747dc808cfae6bbbf76fcfb6b0c59c91c44699fe7c57efd",
+      "revision": 1,
+      "previous_revision_digest": null,
+      "scope_digest": "d6812c952947933aa5ffbdaa7758888ea2f7413fb72a361cf79f72d9244651e0",
+      "question": "Is the VP secretly your internal champion fighting an NIH engineering lead (H2), or actively harvesting targets for that internal build (H1)?",
+      "status": "open",
+      "severity": "critical",
+      "domain": "champion-vs-competitor-disambiguation",
+      "supporting_evidence_ids": [
+        "ev_d4a95d7ad371d3301a6ddbb46c830ab1b11e9dfcd957afe7ba390e98c22aaad1"
+      ],
+      "contradicting_evidence_ids": [],
+      "competing_hypotheses": [],
+      "recommended_probes": [
+        {
+          "operation": "Ask if beating a specific latency bar in a live call (without handing over the raw test suite) unlocks a Q1/Q2 paid pilot.",
+          "rationale": "An internal champion needs proof of a metric and welcomes a live blind test; a benchmark harvester wants the raw suite files without committing to any threshold."
+        }
+      ],
+      "resolution": null,
+      "mutation_evidence_ids": [
+        "ev_d4a95d7ad371d3301a6ddbb46c830ab1b11e9dfcd957afe7ba390e98c22aaad1"
+      ],
+      "revision_digest": "bee7a905ad47417a81d4f0920cc3017fd1a9db3762ce238156a1853b6e8b5dfe"
+    }
+  ],
+  "evidence_records": [
+    {
+      "evidence_id": "ev_84758ef53adce294d59f795e7e60ebb82e0197a96769d5e9c83a11cca85dd5f3",
+      "created_at": "2026-11-16T08:01:27.097Z",
+      "subject": {
+        "subject_id": "sub_d6812c952947933aa5ffbdaa7758888ea2f7413fb72a361cf79f72d9244651e0",
+        "name": "post-demo-platform-vp-reply",
+        "kind": "message-or-statement",
+        "digest": {
+          "sha256": "d6812c952947933aa5ffbdaa7758888ea2f7413fb72a361cf79f72d9244651e0"
+        },
+        "char_length": 418,
+        "context": "VP of Platform at a potential acquirer/partner writing to a startup founder 48 hours after an executive product demo."
+      },
+      "provider": {
+        "id": "rel-core",
+        "name": "Reverse Engineer Logic Engine",
+        "version": "1.0.0"
+      },
+      "predicate_type": "rel.analysis",
+      "operation": "open_subject",
+      "parameters": {},
+      "normalized_result": {
+        "subject_id": "sub_d6812c952947933aa5ffbdaa7758888ea2f7413fb72a361cf79f72d9244651e0",
+        "subject_kind": "message-or-statement",
+        "statistics": {
+          "unit_count": 2,
+          "omission_count": 3,
+          "total_obligations_generated": 5,
+          "total_micro_signals": 10,
+          "signal_histogram": {
+            "NUMERIC_OR_TEMPORAL_ANCHOR": 2,
+            "ADVERSATIVE_PIVOT": 1,
+            "EXTERNALIZED_BLOCKER": 1,
+            "EPISTEMIC_HEDGE": 1,
+            "PRESUPPOSITION_TRIGGER": 1,
+            "CONDITIONAL_QUID_PRO_QUO": 1,
+            "VAGUE_COMMITMENT_HORIZON": 3
+          },
+          "detected_speakers": [],
+          "adversative_pivot_units": [
+            "S01"
+          ],
+          "hedged_units": [
+            "S01"
+          ]
+        },
+        "units": [
+          {
+            "unit_id": "S01",
+            "paragraph_index": 1,
+            "sentence_index": 1,
+            "kind": "statement-unit",
+            "speaker": null,
+            "text": "We were blown away by your live demo on Tuesday, though our product committee feels integrating external partners before Q2 might create overlap with an internal initiative that was recently prioritized.",
+            "span": {
+              "start": 0,
+              "end": 203
+            },
+            "word_count": 31,
+            "clauses": [
+              {
+                "role": "pre-pivot-concession-or-cushion",
+                "connector": null,
+                "text": "We were blown away by your live demo on Tuesday"
+              },
+              {
+                "role": "post-pivot-operational-payload",
+                "connector": "though",
+                "text": "though our product committee feels integrating external partners before Q2 might create overlap with an internal initiative that was recently prioritized."
+              }
+            ],
+            "speech_acts": [
+              "assertive-framing-claim"
+            ],
+            "agency_and_commitment": {
+              "first_person_singular_count": 0,
+              "collective_we_count": 2,
+              "second_person_target_count": 1,
+              "passive_erasure": false,
+              "commitment_profile": "soft-nonbinding-optionality"
+            },
+            "signals": [
+              {
+                "code": "NUMERIC_OR_TEMPORAL_ANCHOR",
+                "label": "Concrete Quantitative / Date Anchor",
+                "category": "hard-specification",
+                "match": "Tuesday",
+                "span": {
+                  "start": 40,
+                  "end": 47
+                },
+                "mechanic": "Introduces hard falsifiable coordinates (price, percentage, deadline) that anchor bargaining space or expose asymmetry against vague surrounding promises."
+              },
+              {
+                "code": "ADVERSATIVE_PIVOT",
+                "label": "Adversative Pivot (Pre-Pivot Cushion -> Post-Pivot Payload)",
+                "category": "framing-pivot",
+                "match": "though",
+                "span": {
+                  "start": 49,
+                  "end": 55
+                },
+                "mechanic": "Splits the sentence into a face-saving or rapport-preserving concession before the pivot and the speaker's actual operational priority after the pivot."
+              },
+              {
+                "code": "EXTERNALIZED_BLOCKER",
+                "label": "Externalized Authority / Bad-Cop Shield",
+                "category": "power-and-leverage",
+                "match": "committee",
+                "span": {
+                  "start": 68,
+                  "end": 77
+                },
+                "mechanic": "Preserves interpersonal warmth ('I am on your side') while attributing a refusal or concession demand to an unreachable off-stage entity."
+              },
+              {
+                "code": "EPISTEMIC_HEDGE",
+                "label": "Epistemic Hedge / Plausible Deniability",
+                "category": "optionality-preservation",
+                "match": "might",
+                "span": {
+                  "start": 124,
+                  "end": 129
+                },
+                "mechanic": "Lowers truth-commitment cost so the actor can advance a claim or insinuation today while retaining an exit ramp if challenged tomorrow."
+              }
+            ]
+          },
+          {
+            "unit_id": "S02",
+            "paragraph_index": 1,
+            "sentence_index": 2,
+            "kind": "statement-unit",
+            "speaker": null,
+            "text": "Obviously we value our relationship and would hate to lose momentum, so if you can share your benchmark suite and latency numbers by Friday EOD, we can explore a pilot structure down the road when bandwidth allows.",
+            "span": {
+              "start": 204,
+              "end": 418
+            },
+            "word_count": 37,
+            "clauses": [
+              {
+                "role": "antecedent-or-main-clause",
+                "connector": null,
+                "text": "Obviously we value our relationship and would hate to lose momentum, so"
+              },
+              {
+                "role": "subordinate-condition-or-warrant",
+                "connector": "if",
+                "text": "if you can share your benchmark suite and latency numbers by Friday EOD, we can explore a pilot structure down the road when bandwidth allows."
+              }
+            ],
+            "speech_acts": [
+              "directive-ask-or-probe",
+              "commissive-promise-or-punt",
+              "expressive-rapport-or-facework"
+            ],
+            "agency_and_commitment": {
+              "first_person_singular_count": 0,
+              "collective_we_count": 3,
+              "second_person_target_count": 2,
+              "passive_erasure": false,
+              "commitment_profile": "soft-nonbinding-optionality"
+            },
+            "signals": [
+              {
+                "code": "PRESUPPOSITION_TRIGGER",
+                "label": "Smuggled Presupposition",
+                "category": "hidden-premise",
+                "match": "Obviously",
+                "span": {
+                  "start": 204,
+                  "end": 213
+                },
+                "mechanic": "Packages a contested assumption as background common knowledge rather than an open claim, forcing the listener to either challenge the frame explicitly or swallow the premise."
+              },
+              {
+                "code": "CONDITIONAL_QUID_PRO_QUO",
+                "label": "Conditional Gate / Leverage Coupling",
+                "category": "bargaining-structure",
+                "match": "if",
+                "span": {
+                  "start": 276,
+                  "end": 278
+                },
+                "mechanic": "Links a desired outcome to a prerequisite concession, revealing the speaker's true exchange function."
+              },
+              {
+                "code": "NUMERIC_OR_TEMPORAL_ANCHOR",
+                "label": "Concrete Quantitative / Date Anchor",
+                "category": "hard-specification",
+                "match": "Friday",
+                "span": {
+                  "start": 337,
+                  "end": 343
+                },
+                "mechanic": "Introduces hard falsifiable coordinates (price, percentage, deadline) that anchor bargaining space or expose asymmetry against vague surrounding promises."
+              },
+              {
+                "code": "VAGUE_COMMITMENT_HORIZON",
+                "label": "Non-Binding / Elastic Commitment",
+                "category": "commitment-asymmetry",
+                "match": "explore",
+                "span": {
+                  "start": 356,
+                  "end": 363
+                },
+                "mechanic": "Simulates forward motion and goodwill while binding zero calendar dates, deliverables, or enforceable obligations."
+              },
+              {
+                "code": "VAGUE_COMMITMENT_HORIZON",
+                "label": "Non-Binding / Elastic Commitment",
+                "category": "commitment-asymmetry",
+                "match": "down the road",
+                "span": {
+                  "start": 382,
+                  "end": 395
+                },
+                "mechanic": "Simulates forward motion and goodwill while binding zero calendar dates, deliverables, or enforceable obligations."
+              },
+              {
+                "code": "VAGUE_COMMITMENT_HORIZON",
+                "label": "Non-Binding / Elastic Commitment",
+                "category": "commitment-asymmetry",
+                "match": "when bandwidth allows",
+                "span": {
+                  "start": 396,
+                  "end": 417
+                },
+                "mechanic": "Simulates forward motion and goodwill while binding zero calendar dates, deliverables, or enforceable obligations."
+              }
+            ]
+          }
+        ],
+        "conspicuous_omissions": [
+          {
+            "omission_id": "OM01",
+            "slot": "MISSING_CONCRETE_VERIFIABLE_HORIZON",
+            "title": "Absence of Concrete Dates, Metrics, or Acceptance Criteria",
+            "trigger_observation": "Commitments or next steps are framed using elastic horizons ('soon', 'explore', 'when bandwidth allows', or unanchored future verbs) without a falsifiable deadline or numeric threshold."
+          },
+          {
+            "omission_id": "OM02",
+            "slot": "MISSING_DECISION_OWNER_AND_INCENTIVE",
+            "title": "Omitted Named Decision-Maker & Real Internal Tradeoff",
+            "trigger_observation": "Refusals, delays, or constraints are attributed to passive events or impersonal entities ('policy', 'bandwidth', 'it was decided') while omitting who actually holds veto power and what would change their vote."
+          },
+          {
+            "omission_id": "OM03",
+            "slot": "MISSING_RECIPROCAL_DOWNSIDE_OR_CONCESSION",
+            "title": "One-Way Risk/Effort Ask Without Reciprocal Binding Commitment",
+            "trigger_observation": "The actor requests information, action, concession, or patience from the counterpart while keeping their own reciprocal commitment non-binding or unstated."
+          }
+        ]
+      },
+      "confidence": "observed",
+      "authority": "verbatim-source",
+      "limitations": [],
+      "locations": [],
+      "evidence_links": []
+    },
+    {
+      "evidence_id": "ev_aa53c7629d32ac4d6ff777e311d230c47cc8aa636a1425fe47523ac179f8e889",
+      "created_at": "2026-11-16T08:01:27.098Z",
+      "subject": {
+        "subject_id": "sub_d6812c952947933aa5ffbdaa7758888ea2f7413fb72a361cf79f72d9244651e0",
+        "name": "post-demo-platform-vp-reply",
+        "kind": "message-or-statement",
+        "digest": {
+          "sha256": "d6812c952947933aa5ffbdaa7758888ea2f7413fb72a361cf79f72d9244651e0"
+        },
+        "char_length": 418,
+        "context": "VP of Platform at a potential acquirer/partner writing to a startup founder 48 hours after an executive product demo."
+      },
+      "provider": {
+        "id": "mcp-analyst",
+        "name": "Host Agent Analyst",
+        "version": "1.0.0"
+      },
+      "predicate_type": "rel.exposition",
+      "operation": "record_unit_exposition",
+      "parameters": {
+        "recorded_units": [
+          "S01",
+          "S02",
+          "OM01",
+          "OM02",
+          "OM03"
+        ]
+      },
+      "normalized_result": {
+        "recorded_count": 5,
+        "recorded_units": [
+          "S01",
+          "S02",
+          "OM01",
+          "OM02",
+          "OM03"
+        ]
+      },
+      "confidence": "inferred",
+      "authority": "analyst-inference",
+      "limitations": [],
+      "locations": [],
+      "evidence_links": [
+        "ev_84758ef53adce294d59f795e7e60ebb82e0197a96769d5e9c83a11cca85dd5f3"
+      ]
+    },
+    {
+      "evidence_id": "ev_d4a95d7ad371d3301a6ddbb46c830ab1b11e9dfcd957afe7ba390e98c22aaad1",
+      "created_at": "2026-11-16T08:01:27.098Z",
+      "subject": {
+        "subject_id": "sub_d6812c952947933aa5ffbdaa7758888ea2f7413fb72a361cf79f72d9244651e0",
+        "name": "post-demo-platform-vp-reply",
+        "kind": "message-or-statement",
+        "digest": {
+          "sha256": "d6812c952947933aa5ffbdaa7758888ea2f7413fb72a361cf79f72d9244651e0"
+        },
+        "char_length": 418,
+        "context": "VP of Platform at a potential acquirer/partner writing to a startup founder 48 hours after an executive product demo."
+      },
+      "provider": {
+        "id": "rel-core",
+        "name": "Reverse Engineer Logic Engine",
+        "version": "1.0.0"
+      },
+      "predicate_type": "rel.analysis",
+      "operation": "record_motivational_unknown",
+      "parameters": {},
+      "normalized_result": {
+        "question": "Is the VP secretly your internal champion fighting an NIH engineering lead (H2), or actively harvesting targets for that internal build (H1)?"
+      },
+      "confidence": "inferred",
+      "authority": "analyst-inference",
+      "limitations": [],
+      "locations": [],
+      "evidence_links": []
+    }
+  ]
+}

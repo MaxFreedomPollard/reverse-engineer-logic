@@ -1,0 +1,12 @@
+{
+  "name": "reverse-engineer-logic",
+  "version": "1.0.0",
+  "description": "Discern the underlying logic, hidden premises, micro-signals, omissions, and four-layer motivations behind any message or situation.",
+  "mcpServers": {
+    "rel": {
+      "command": "node",
+      "args": ["${extensionPath}/bin/rel.mjs", "mcp"]
+    }
+  },
+  "contextFileName": "skills/reverse-engineer-logic/SKILL.md"
+}

@@ -1,0 +1,32 @@
+{
+  "name": "reverse-engineer-logic",
+  "mcpName": "local/reverse-engineer-logic",
+  "version": "1.0.0",
+  "description": "Reverse engineer any situation, message, negotiation, or decision to expound deeply upon the underlying logic, hidden premises, micro-signals, omissions, and multi-layer motivations behind every sentence and aspect.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "rel": "bin/rel.mjs",
+    "reverse-engineer-logic": "bin/rel.mjs"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "test": "node test/selftest.mjs",
+    "doctor": "node bin/rel.mjs doctor",
+    "mcp": "node bin/rel.mjs mcp",
+    "serve": "node bin/rel.mjs serve"
+  },
+  "keywords": [
+    "logic-decompilation",
+    "motivation-analysis",
+    "pragmatics",
+    "rhetoric",
+    "game-theory",
+    "obligation-ledger",
+    "mcp-server",
+    "cli",
+    "epistemics"
+  ]
+}

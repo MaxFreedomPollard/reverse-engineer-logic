@@ -1,0 +1,24 @@
+{
+  "name": "reverse-engineer-logic",
+  "version": "1.0.0",
+  "description": "Discern the underlying logic, hidden premises, micro-signals, omissions, and four-layer motivations behind any message or situation.",
+  "repository": "https://github.com/MaxFreedomPollard/reverse-engineer-logic",
+  "license": "MIT",
+  "keywords": [
+    "logic-decompilation",
+    "motivation-analysis",
+    "pragmatics",
+    "game-theory",
+    "mcp-server"
+  ],
+  "skills": "./skills",
+  "mcpServers": {
+    "rel": {
+      "command": "node",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/bin/rel.mjs",
+        "mcp"
+      ]
+    }
+  }
+}

@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Reverse Engineer Logic (REL) - Interactive Logic & Motivation X-Ray</title>
+<style>
+  :root {
+    --bg: #0b0e14;
+    --panel: #121722;
+    --panel-alt: #171e2c;
+    --border: #253047;
+    --text: #e6edf7;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent-soft: rgba(56, 189, 248, 0.14);
+    --amber: #fbbf24;
+    --amber-soft: rgba(251, 191, 36, 0.14);
+    --rose: #fb7185;
+    --rose-soft: rgba(251, 113, 133, 0.14);
+    --emerald: #34d399;
+    --emerald-soft: rgba(52, 211, 153, 0.14);
+    --violet: #a78bfa;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.55;
+  }
+  header {
+    padding: 18px 28px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #131926 0%, #0d111a 100%);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .badge-logo {
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 13px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.05em;
+  }
+  h1 { margin: 0; font-size: 18px; font-weight: 650; }
+  .ledger-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+  }
+  .pill {
+    padding: 4px 9px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    color: var(--muted);
+  }
+  .pill.ok {
+    border-color: rgba(52, 211, 153, 0.45);
+    color: var(--emerald);
+    background: var(--emerald-soft);
+  }
+  .live-composer {
+    padding: 16px 28px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+    display: none;
+  }
+  .composer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr auto;
+    gap: 12px;
+    align-items: stretch;
+  }
+  textarea, input, select {
+    width: 100%;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+  }
+  button.primary {
+    background: var(--accent);
+    color: #06121d;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    padding: 0 20px;
+    cursor: pointer;
+    font-size: 13.5px;
+  }
+  button.primary:hover { filter: brightness(1.08); }
+  .subtext-banner {
+    margin: 20px 28px 0;
+    padding: 18px 22px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(56,189,248,0.10), rgba(167,139,250,0.08));
+    border: 1px solid rgba(56, 189, 248, 0.32);
+  }
+  .subtext-banner h2 {
+    margin: 0 0 6px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+  }
+  .subtext-banner p { margin: 0; font-size: 15px; }
+  .workspace {
+    display: grid;
+    grid-template-columns: 44% 56%;
+    gap: 20px;
+    padding: 20px 28px 40px;
+    align-items: start;
+  }
+  @media (max-width: 1024px) {
+    .workspace { grid-template-columns: 1fr; }
+    .composer-grid { grid-template-columns: 1fr; }
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+  }
+  .card h3 {
+    margin: 0 0 12px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+  }
+  .unit-item {
+    padding: 12px 14px;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    background: var(--panel-alt);
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: border-color 0.15s, transform 0.1s;
+  }
+  .unit-item:hover { border-color: var(--accent); }
+  .unit-item.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+    background: rgba(56, 189, 248, 0.08);
+  }
+  .unit-item.omission { border-left: 3px solid var(--rose); }
+  .unit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .unit-id { color: var(--accent); font-weight: 700; }
+  .omission .unit-id { color: var(--rose); }
+  .sig-chip {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    padding: 2px 6px;
+    margin: 4px 4px 0 0;
+    border-radius: 4px;
+    background: var(--amber-soft);
+    color: var(--amber);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+  }
+  .dossier-section {
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(37, 48, 71, 0.65);
+  }
+  .dossier-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .label {
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .motive-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .motive-box {
+    background: var(--panel-alt);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  .motive-box strong {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--violet);
+    margin-bottom: 4px;
+  }
+  .hyp-row {
+    margin-bottom: 10px;
+    background: var(--panel-alt);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .hyp-bar-bg {
+    height: 6px;
+    background: #0b0e14;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 6px 0;
+  }
+  .hyp-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--violet));
+  }
+  .probe-box {
+    background: var(--emerald-soft);
+    border: 1px solid rgba(52, 211, 153, 0.35);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13.5px;
+  }
+  ul.tight { margin: 6px 0 0; padding-left: 18px; }
+  ul.tight li { margin-bottom: 5px; font-size: 13.5px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <span class="badge-logo">REL v1.0</span>
+    <h1>Reverse Engineer Logic: Situation & Message X-Ray</h1>
+  </div>
+  <div class="ledger-pills" id="ledgerPills"></div>
+</header>
+
+<section class="live-composer">
+  <div class="composer-grid">
+    <textarea id="inputMessage" rows="3" placeholder="Paste any message, email, negotiation, contract clause, dialogue, or complex situation to reverse engineer its logic and motivation..."></textarea>
+    <div>
+      <input id="inputContext" placeholder="Optional context (e.g. 'Investor replying after term sheet ask')" style="margin-bottom:8px;" />
+      <select id="inputProvider">
+        <option value="auto">Provider: Auto (Deep Neural if available, else Builtin)</option>
+        <option value="builtin">Provider: Fast Deterministic Builtin (<50ms)</option>
+        <option value="agy">Provider: Local AGY CLI Deep Synthesis</option>
+      </select>
+    </div>
+    <button class="primary" id="analyzeBtn">Reverse Engineer Logic</button>
+  </div>
+</section>
+
+<div class="subtext-banner" id="subtextBanner" style="display:none;">
+  <h2>Executive Subtext Translation (Stripped of Social Anesthetic)</h2>
+  <p id="subtextBody"></p>
+</div>
+
+<main class="workspace" id="mainWorkspace" style="display:none;">
+  <div>
+    <div class="card">
+      <h3>Decompiled Addressable Units (Click Any Sentence or Aspect)</h3>
+      <div id="unitList"></div>
+    </div>
+    <div class="card">
+      <h3>Conspicuous Omissions (What Was Strategically Left Unsaid)</h3>
+      <div id="omissionList"></div>
+    </div>
+    <div class="card">
+      <h3>Actor Incentive, Fear & BATNA Matrix</h3>
+      <div id="actorMatrix"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="inspectorCard">
+      <h3 id="inspectorTitle">Unit Logic & Motivation Dossier</h3>
+      <div id="inspectorBody"></div>
+    </div>
+    <div class="card">
+      <h3>Strategic Counter-Playbook & Falsification Probes</h3>
+      <div id="playbookBody"></div>
+    </div>
+  </div>
+</main>
+
+<script>
+let BUNDLE = {"bundle_format":"rel.investigation-bundle.v1","created_at":"2026-11-16T07:50:34.589Z","subject":{"subject_id":"sub_a59b1d6aacc1f143dd7bfafa82b12c6d48fdaf4cb5d9300f43bf774de4788866","name":"message-or-statement-input","kind":"message-or-statement","digest":{"sha256":"a59b1d6aacc1f143dd7bfafa82b12c6d48fdaf4cb5d9300f43bf774de4788866"},"char_length":247,"context":"SaaS vendor account executive responding after a 3-day production outage."},"raw_text":"Mistakes were made in how the Q3 rollout was communicated, but standard policy prevents retroactive credits. That said, if you renew for 24 months by Friday EOD, we can try to explore an executive advisory tier down the road when bandwidth allows.","decompilation":{"subject_id":"sub_a59b1d6aacc1f143dd7bfafa82b12c6d48fdaf4cb5d9300f43bf774de4788866","subject_kind":"message-or-statement","statistics":{"unit_count":2,"omission_count":3,"total_obligations_generated":5,"total_micro_signals":11,"signal_histogram":{"PASSIVE_AGENCY_ERASURE":1,"ADVERSATIVE_PIVOT":2,"EXTERNALIZED_BLOCKER":1,"CONDITIONAL_QUID_PRO_QUO":1,"NUMERIC_OR_TEMPORAL_ANCHOR":2,"VAGUE_COMMITMENT_HORIZON":4},"detected_speakers":[],"adversative_pivot_units":["S01","S02"],"hedged_units":[]},"units":[{"unit_id":"S01","paragraph_index":1,"sentence_index":1,"kind":"statement-unit","speaker":null,"text":"Mistakes were made in how the Q3 rollout was communicated, but standard policy prevents retroactive credits.","span":{"start":0,"end":108},"word_count":16,"clauses":[{"role":"pre-pivot-concession-or-cushion","connector":null,"text":"Mistakes were made in how the Q3 rollout was communicated"},{"role":"post-pivot-operational-payload","connector":"but","text":"but standard policy prevents retroactive credits."}],"speech_acts":["assertive-framing-claim"],"agency_and_commitment":{"first_person_singular_count":0,"collective_we_count":0,"second_person_target_count":0,"passive_erasure":true,"commitment_profile":"neutral"},"signals":[{"code":"PASSIVE_AGENCY_ERASURE","label":"Passive Voice / Agency Erasure","category":"accountability-shift","match":"Mistakes were made","span":{"start":0,"end":18},"mechanic":"Grammatically deletes the causal human decision-maker so an unpopular choice or failure reads like impersonal weather rather than an attributable action."},{"code":"ADVERSATIVE_PIVOT","label":"Adversative Pivot (Pre-Pivot Cushion -> Post-Pivot Payload)","category":"framing-pivot","match":"but","span":{"start":59,"end":62},"mechanic":"Splits the sentence into a face-saving or rapport-preserving concession before the pivot and the speaker's actual operational priority after the pivot."},{"code":"EXTERNALIZED_BLOCKER","label":"Externalized Authority / Bad-Cop Shield","category":"power-and-leverage","match":"policy","span":{"start":72,"end":78},"mechanic":"Preserves interpersonal warmth ('I am on your side') while attributing a refusal or concession demand to an unreachable off-stage entity."}]},{"unit_id":"S02","paragraph_index":1,"sentence_index":2,"kind":"statement-unit","speaker":null,"text":"That said, if you renew for 24 months by Friday EOD, we can try to explore an executive advisory tier down the road when bandwidth allows.","span":{"start":109,"end":247},"word_count":26,"clauses":[{"role":"antecedent-or-main-clause","connector":null,"text":"That said"},{"role":"subordinate-condition-or-warrant","connector":"if","text":"if you renew for 24 months by Friday EOD, we can try to explore an executive advisory tier down the road when bandwidth allows."}],"speech_acts":["commissive-promise-or-punt"],"agency_and_commitment":{"first_person_singular_count":0,"collective_we_count":1,"second_person_target_count":1,"passive_erasure":false,"commitment_profile":"soft-nonbinding-optionality"},"signals":[{"code":"ADVERSATIVE_PIVOT","label":"Adversative Pivot (Pre-Pivot Cushion -> Post-Pivot Payload)","category":"framing-pivot","match":"That said","span":{"start":109,"end":118},"mechanic":"Splits the sentence into a face-saving or rapport-preserving concession before the pivot and the speaker's actual operational priority after the pivot."},{"code":"CONDITIONAL_QUID_PRO_QUO","label":"Conditional Gate / Leverage Coupling","category":"bargaining-structure","match":"if","span":{"start":120,"end":122},"mechanic":"Links a desired outcome to a prerequisite concession, revealing the speaker's true exchange function."},{"code":"NUMERIC_OR_TEMPORAL_ANCHOR","label":"Concrete Quantitative / Date Anchor","category":"hard-specification","match":"24 months","span":{"start":137,"end":146},"mechanic":"Introduces hard falsifiable coordinates (price, percentage, deadline) that anchor bargaining space or expose asymmetry against vague surrounding promises."},{"code":"NUMERIC_OR_TEMPORAL_ANCHOR","label":"Concrete Quantitative / Date Anchor","category":"hard-specification","match":"Friday","span":{"start":150,"end":156},"mechanic":"Introduces hard falsifiable coordinates (price, percentage, deadline) that anchor bargaining space or expose asymmetry against vague surrounding promises."},{"code":"VAGUE_COMMITMENT_HORIZON","label":"Non-Binding / Elastic Commitment","category":"commitment-asymmetry","match":"try to","span":{"start":169,"end":175},"mechanic":"Simulates forward motion and goodwill while binding zero calendar dates, deliverables, or enforceable obligations."},{"code":"VAGUE_COMMITMENT_HORIZON","label":"Non-Binding / Elastic Commitment","category":"commitment-asymmetry","match":"explore","span":{"start":176,"end":183},"mechanic":"Simulates forward motion and goodwill while binding zero calendar dates, deliverables, or enforceable obligations."},{"code":"VAGUE_COMMITMENT_HORIZON","label":"Non-Binding / Elastic Commitment","category":"commitment-asymmetry","match":"down the road","span":{"start":211,"end":224},"mechanic":"Simulates forward motion and goodwill while binding zero calendar dates, deliverables, or enforceable obligations."},{"code":"VAGUE_COMMITMENT_HORIZON","label":"Non-Binding / Elastic Commitment","category":"commitment-asymmetry","match":"when bandwidth allows","span":{"start":225,"end":246},"mechanic":"Simulates forward motion and goodwill while binding zero calendar dates, deliverables, or enforceable obligations."}]}],"conspicuous_omissions":[{"omission_id":"OM01","slot":"MISSING_CONCRETE_VERIFIABLE_HORIZON","title":"Absence of Concrete Dates, Metrics, or Acceptance Criteria","trigger_observation":"Commitments or next steps are framed using elastic horizons ('soon', 'explore', 'when bandwidth allows', or unanchored future verbs) without a falsifiable deadline or numeric threshold."},{"omission_id":"OM02","slot":"MISSING_DECISION_OWNER_AND_INCENTIVE","title":"Omitted Named Decision-Maker & Real Internal Tradeoff","trigger_observation":"Refusals, delays, or constraints are attributed to passive events or impersonal entities ('policy', 'bandwidth', 'it was decided') while omitting who actually holds veto power and what would change their vote."},{"omission_id":"OM03","slot":"MISSING_RECIPROCAL_DOWNSIDE_OR_CONCESSION","title":"One-Way Risk/Effort Ask Without Reciprocal Binding Commitment","trigger_observation":"The actor requests information, action, concession, or patience from the counterpart while keeping their own reciprocal commitment non-binding or unstated."}]},"obligation_ledger":{"ledger_id":"obl_ledger_7ad2e3bda78d5e9cdd61c73cf88d0c59c86414d0e0a24cfef4eeaa3ad3a9294f","subject_sha256":"a59b1d6aacc1f143dd7bfafa82b12c6d48fdaf4cb5d9300f43bf774de4788866","total_obligations":5,"sentence_obligations":2,"omission_obligations":3,"obligations":[{"obligation_id":"obl_abcef0a5dc3b7415e75ea7a87057bb16172ef7962ff0f68b2e15feba818e4768","unit_id":"S01","unit_kind":"statement-unit","anchor_text":"Mistakes were made in how the Q3 rollout was communicated, but standard policy prevents retroactive credits.","span":{"start":0,"end":108},"required":true,"required_dimensions":["surface_vs_operational_function","logic_chain_and_hidden_premises","motivational_stack","word_choice_and_counterfactual","competing_hypotheses_and_falsifier"],"detected_micro_signals":["PASSIVE_AGENCY_ERASURE","ADVERSATIVE_PIVOT","EXTERNALIZED_BLOCKER"],"status":"verified","fulfilling_evidence_ids":["ev_2d30a589624c5b04cad586591552926a34137af07112c75108706bbdb54b2afa"],"source_evidence_id":"ev_a43802f009f52866585970c91024b30e8cd0809ee7777cf8a8b73c718e8001f4"},{"obligation_id":"obl_0578268358c4dbf594f92cbcf9a0fe34e200d45e93618d2af3cbf05a8390ac1c","unit_id":"S02","unit_kind":"statement-unit","anchor_text":"That said, if you renew for 24 months by Friday EOD, we can try to explore an executive advisory tier down the road when bandwidth allows.","span":{"start":109,"end":247},"required":true,"required_dimensions":["surface_vs_operational_function","logic_chain_and_hidden_premises","motivational_stack","word_choice_and_counterfactual","competing_hypotheses_and_falsifier"],"detected_micro_signals":["ADVERSATIVE_PIVOT","CONDITIONAL_QUID_PRO_QUO","NUMERIC_OR_TEMPORAL_ANCHOR","NUMERIC_OR_TEMPORAL_ANCHOR","VAGUE_COMMITMENT_HORIZON","VAGUE_COMMITMENT_HORIZON","VAGUE_COMMITMENT_HORIZON","VAGUE_COMMITMENT_HORIZON"],"status":"verified","fulfilling_evidence_ids":["ev_2d30a589624c5b04cad586591552926a34137af07112c75108706bbdb54b2afa"],"source_evidence_id":"ev_a43802f009f52866585970c91024b30e8cd0809ee7777cf8a8b73c718e8001f4"},{"obligation_id":"obl_3ba781222b903f7687f848f24d8ae0db7cde64ac364903e6d6d1b712fe55b03e","unit_id":"OM01","unit_kind":"conspicuous-omission","anchor_text":"[OMISSION: Absence of Concrete Dates, Metrics, or Acceptance Criteria]","span":null,"required":true,"required_dimensions":["expected_in_candid_baseline","strategic_benefit_of_silence","motivational_hypotheses","diagnostic_probe"],"detected_micro_signals":["MISSING_CONCRETE_VERIFIABLE_HORIZON"],"status":"verified","fulfilling_evidence_ids":["ev_2d30a589624c5b04cad586591552926a34137af07112c75108706bbdb54b2afa"],"source_evidence_id":"ev_a43802f009f52866585970c91024b30e8cd0809ee7777cf8a8b73c718e8001f4"},{"obligation_id":"obl_10f091c9a3218032774a0ec140a5e453f02eea82621615e7b49d2f871f7e9ed9","unit_id":"OM02","unit_kind":"conspicuous-omission","anchor_text":"[OMISSION: Omitted Named Decision-Maker & Real Internal Tradeoff]","span":null,"required":true,"required_dimensions":["expected_in_candid_baseline","strategic_benefit_of_silence","motivational_hypotheses","diagnostic_probe"],"detected_micro_signals":["MISSING_DECISION_OWNER_AND_INCENTIVE"],"status":"verified","fulfilling_evidence_ids":["ev_2d30a589624c5b04cad586591552926a34137af07112c75108706bbdb54b2afa"],"source_evidence_id":"ev_a43802f009f52866585970c91024b30e8cd0809ee7777cf8a8b73c718e8001f4"},{"obligation_id":"obl_14669be7750f6e37b9c594d89e512d8c2cf254287291829b6f761129e49c86f4","unit_id":"OM03","unit_kind":"conspicuous-omission","anchor_text":"[OMISSION: One-Way Risk/Effort Ask Without Reciprocal Binding Commitment]","span":null,"required":true,"required_dimensions":["expected_in_candid_baseline","strategic_benefit_of_silence","motivational_hypotheses","diagnostic_probe"],"detected_micro_signals":["MISSING_RECIPROCAL_DOWNSIDE_OR_CONCESSION"],"status":"verified","fulfilling_evidence_ids":["ev_2d30a589624c5b04cad586591552926a34137af07112c75108706bbdb54b2afa"],"source_evidence_id":"ev_a43802f009f52866585970c91024b30e8cd0809ee7777cf8a8b73c718e8001f4"}]},"completion_ledger":{"ledger_id":"ecl_4d2dbaebfbdf6759379bf724047412fe2e22ce702ab78c2f8e8bdb65de934136","records":[{"claim_id":"OM01","obligation_id":"obl_3ba781222b903f7687f848f24d8ae0db7cde64ac364903e6d6d1b712fe55b03e","status":"pass","evidence_ids":["ev_2d30a589624c5b04cad586591552926a34137af07112c75108706bbdb54b2afa","ev_a43802f009f52866585970c91024b30e8cd0809ee7777cf8a8b73c718e8001f4"]},{"claim_id":"OM02","obligation_id":"obl_10f091c9a3218032774a0ec140a5e453f02eea82621615e7b49d2f871f7e9ed9","status":"pass","evidence_ids":["ev_2d30a589624c5b04cad586591552926a34137af07112c75108706bbdb54b2afa","ev_a43802f009f52866585970c91024b30e8cd0809ee7777cf8a8b73c718e8001f4"]},{"claim_id":"OM03","obligation_id":"obl_14669be7750f6e37b9c594d89e512d8c2cf254287291829b6f761129e49c86f4","status":"pass","evidence_ids":["ev_2d30a589624c5b04cad586591552926a34137af07112c75108706bbdb54b2afa","ev_a43802f009f52866585970c91024b30e8cd0809ee7777cf8a8b73c718e8001f4"]},{"claim_id":"S01","obligation_id":"obl_abcef0a5dc3b7415e75ea7a87057bb16172ef7962ff0f68b2e15feba818e4768","status":"pass","evidence_ids":["ev_2d30a589624c5b04cad586591552926a34137af07112c75108706bbdb54b2afa","ev_a43802f009f52866585970c91024b30e8cd0809ee7777cf8a8b73c718e8001f4"]},{"claim_id":"S02","obligation_id":"obl_0578268358c4dbf594f92cbcf9a0fe34e200d45e93618d2af3cbf05a8390ac1c","status":"pass","evidence_ids":["ev_2d30a589624c5b04cad586591552926a34137af07112c75108706bbdb54b2afa","ev_a43802f009f52866585970c91024b30e8cd0809ee7777cf8a8b73c718e8001f4"]}],"summary":{"total":5,"pass":5,"fail":0,"unsupported":0,"truncated":0,"unknown":0,"coverage_ratio":1,"complete":true},"diagnostics":[]},"exposition":{"provider_used":{"id":"builtin","name":"Deterministic Pragmatic, Rhetorical & Game-Theoretic Expounder","version":"1.0.0"},"authority":"structural-pragmatics","confidence":"derived","engine_label":"REL Deterministic Pragmatic & Game-Theoretic Expounder","global_architecture":{"executive_subtext_translation":"Across 2 addressable units and 3 conspicuous omissions, this message-or-statement is structured to advance a specific positional outcome while minimizing the actor's interpersonal friction and binding downside. Adversative pivots (S01, S02) reveal a classic two-stage framing: initial warmth or validation is deployed as social anesthetic so the post-pivot constraint, refusal, or ask lands without triggering defensive pushback. Notice the commitment asymmetry: where concrete concessions, patience, or actions are sought from the counterpart, the speaker's own future obligations remain protected behind elastic horizons or discretionary escape clauses. Accountability for friction points is deflected away from the speaker via passive agency erasure or off-stage authorities ('policy', 'bandwidth', 'process'), allowing the speaker to preserve rapport while holding a firm line.","core_logical_architecture":"The sequence progresses from assertive-framing-claim in S01 through 2 structured moves (VAGUE_COMMITMENT_HORIZON (4x), ADVERSATIVE_PIVOT (2x), NUMERIC_OR_TEMPORAL_ANCHOR (2x), PASSIVE_AGENCY_ERASURE (1x)). Each unit builds an implicit funnel: establish reasonableness up front, treat background assumptions as settled common ground, soften or externalize constraints, and guide the counterpart toward accepting the speaker's preferred framing as the path of least resistance.","actor_incentive_matrix":[{"actor":"Primary Initiator / Speaker","stated_goal":"Maintain constructive alignment, communicate current status/constraints, and coordinate next steps smoothly.","revealed_incentives":"Maximize optionality, extract clarity or patience from the counterpart at near-zero binding cost, and keep exit ramps open until higher-priority contingencies resolve.","core_fears_or_aversions":"Being locked into an irreversible commitment too early, taking direct personal blame for a refusal/delay, or losing the counterpart as a warm backup option.","leverage_and_batna":"Controls information timing and internal process visibility; relies on ambiguity so the counterpart underestimates their own leverage."},{"actor":"Target Counterpart / Audience","stated_goal":"Obtain clarity, fair reciprocity, predictable commitments, and protection against downside risk.","revealed_incentives":"Convert soft promises into falsifiable dates/numbers and surface the real decision-maker before expending scarce effort or leverage.","core_fears_or_aversions":"Investing resources into an asymmetric arrangement, absorbing hidden risk, or mistaking polite deferrals for genuine buy-in.","leverage_and_batna":"Controls cooperation, execution bandwidth, and willingness to walk away or escalate to decision-owning principals."}],"syllogistic_macro_chain":["Premise 1 (Explicit Frame): Present the speaker's intent as collaborative, reasonable, or governed by objective circumstances.","Premise 2 (Unstated Load-Bearing Assumption): The speaker's framing of constraints, urgency, or scope is treated as fixed reality rather than a negotiable choice.","Premise 3 (Asymmetric Exchange): Maintaining harmony requires the counterpart to accommodate the elastic timeline, request, or boundary now while deferring hard reciprocity.","Operational Conclusion: Secure compliance, patience, or optionality without surrendering unilateral flexibility."],"strategic_response_playbook":[{"strategy_name":"Warm Mirror + Concrete Pin (Convert Elastic Verbs to Dates)","when_to_use":"When you value the relationship but refuse to carry unpriced uncertainty or vague 'circle back' horizons.","exact_move_or_script":"Match their warm tone in clause 1, ignore pre-pivot fluff, and pin a concrete binary date/criterion: 'Completely understand the moving pieces. To plan my side cleanly, let's set [Date] as our decision checkpoint - if we haven't locked [Specific Item] by then, I will allocate that slot elsewhere.'","expected_counter_reaction":"High-intent actors immediately lock the date or counter-propose a nearby real date; low-intent optionality-keepers push back against any hard checkpoint."},{"strategy_name":"Blocker Isolation Test ('If We Solve X, Is Everything Else a Yes?')","when_to_use":"When an externalized blocker, policy, or bandwidth constraint is cited as the reason for refusal or concession.","exact_move_or_script":"Ask: 'If we solve [Stated Blocker X] completely on our end, are we ready to commit today, or is there another factor we should weigh upfront?'","expected_counter_reaction":"Exposes immediately whether [Stated Blocker X] was the real causal constraint or merely a polite proxy objection."}]},"unit_expositions":[{"unit_id":"S01","literal_surface":"At face value, S01 states: \"Mistakes were made in how the Q3 rollout was communicated, but standard policy prevents retroactive credits.\"","operational_function":"Operating as the opening anchor, this unit executes speech act(s) [assertive-framing-claim] with commitment profile 'neutral'. Crucially, it uses an adversative hinge: the opening clause (\"Mistakes were made in how the Q3 rollout was communicated\") functions as relational cushioning to disarm resistance, while the post-pivot clause (\"but standard policy prevents retroactive credits.\") delivers the speaker's actual priority and overrides the opening concession.","logic_chain":["Explicit input (S01): \"Mistakes were made in how the Q3 rollout was communicated, but standard policy prevents retroactive credits.\"","Implicit inferential bridge: If the listener accepts this framing at face value, the burden shifts onto the listener to accommodate or justify any deviation.","Target behavioral effect: Narrow resistance and prime alignment for unit S02."],"hidden_premises":["Assumes that acknowledging \"Mistakes were made in how the Q3 rollout was communicated\" verbally discharges the obligation to act on it, allowing \"but standard policy prevents retroactive credits.\" to take full precedence.","Assumes the cited external rule, policy, or third party is immutable and that the speaker has zero influence or discretion to request an exception."],"motivational_stack":{"surface_motive":"Communicate clearly, appear reasonable/cooperative, and maintain constructive norms.","tactical_motive":"Neutralize anticipated objection upfront while pivoting control to the post-hinge condition.","core_self_interest":"Protect resources, time, leverage, or decision autonomy while advancing preferred terms.","ego_or_face_protection":"Preserve self-image and public reputation as fair, competent, and non-adversarial even while pursuing asymmetric terms."},"word_choice_forensics":"\"Mistakes were made\" [PASSIVE_AGENCY_ERASURE]: Grammatically deletes the causal human decision-maker so an unpopular choice or failure reads like impersonal weather rather than an attributable action. \"but\" [ADVERSATIVE_PIVOT]: Splits the sentence into a face-saving or rapport-preserving concession before the pivot and the speaker's actual operational priority after the pivot. \"policy\" [EXTERNALIZED_BLOCKER]: Preserves interpersonal warmth ('I am on your side') while attributing a refusal or concession demand to an unreachable off-stage entity.","counterfactual_translation":"Unvarnished version without the pre-pivot cushion: \"standard policy prevents retroactive credits.\" - Notice how blunt that sounds alone; the opening clause exists specifically to soften that bluntness.","hypotheses":[{"id":"H1","label":"Calibrated Strategic Framing (Optionality & Friction Management)","probability":0.6,"rationale":"Presence of 3 pragmatic micro-signal(s) and 'neutral' commitment profile aligns with deliberate risk/face management."},{"id":"H2","label":"Candid Constraint Reporting Under Social Politeness Norms","probability":0.28,"rationale":"Standard professional etiquette often wraps genuine constraints in softening language to avoid unnecessary friction."},{"id":"H3","label":"Internal Coalition / Principal Buffering","probability":0.12,"rationale":"Wording reflects compromises or unresolved tension behind the scenes on the speaker's own side."}],"diagnostic_probe":{"probe_question_or_action":"Acknowledge the post-pivot clause directly (\"but standard policy prevents retroactive credits....\") and ask what concrete condition or metric would turn it into a firm yes.","if_h1_true_expect":"They will hedge again, broaden the objection, or resist pinning a concrete threshold.","if_h2_true_expect":"They will show relief at plain talk and collaborate on a concrete, bounded workaround."}},{"unit_id":"S02","literal_surface":"At face value, S02 states: \"That said, if you renew for 24 months by Friday EOD, we can try to explore an executive advisory tier down the road when bandwidth allows.\"","operational_function":"Operating as the closing exit / action hook, this unit executes speech act(s) [commissive-promise-or-punt] with commitment profile 'soft-nonbinding-optionality'. It creates the psychological feeling of a forward promise while carefully withholding hard dates, numbers, or enforceable conditions, preserving cheap exit optionality.","logic_chain":["Explicit input (S02): \"That said, if you renew for 24 months by Friday EOD, we can try to explore an executive advisory tier down the road when bandwidth allows.\"","Implicit inferential bridge: If the listener accepts this framing at face value, the burden shifts onto the listener to accommodate or justify any deviation.","Target behavioral effect: Narrow resistance and prime alignment for the desired post-message action."],"hidden_premises":["Assumes the speaker's selection of facts in S02 is a complete and neutral representation of the situation rather than a curated slice aligned with their objective.","Assumes the counterpart shares the same urgency curve and cost-benefit weighting implied by this framing."],"motivational_stack":{"surface_motive":"Communicate clearly, appear reasonable/cooperative, and maintain constructive norms.","tactical_motive":"Establish favorable framing coordinates and manage conversational tempo.","core_self_interest":"Retain unilateral optionality and zero-penalty exit Flexibility while keeping the counterpart engaged.","ego_or_face_protection":"Preserve self-image and public reputation as fair, competent, and non-adversarial even while pursuing asymmetric terms."},"word_choice_forensics":"\"That said\" [ADVERSATIVE_PIVOT]: Splits the sentence into a face-saving or rapport-preserving concession before the pivot and the speaker's actual operational priority after the pivot. \"if\" [CONDITIONAL_QUID_PRO_QUO]: Links a desired outcome to a prerequisite concession, revealing the speaker's true exchange function. \"24 months\" [NUMERIC_OR_TEMPORAL_ANCHOR]: Introduces hard falsifiable coordinates (price, percentage, deadline) that anchor bargaining space or expose asymmetry against vague surrounding promises. \"Friday\" [NUMERIC_OR_TEMPORAL_ANCHOR]: Introduces hard falsifiable coordinates (price, percentage, deadline) that anchor bargaining space or expose asymmetry against vague surrounding promises. \"try to\" [VAGUE_COMMITMENT_HORIZON]: Simulates forward motion and goodwill while binding zero calendar dates, deliverables, or enforceable obligations. \"explore\" [VAGUE_COMMITMENT_HORIZON]: Simulates forward motion and goodwill while binding zero calendar dates, deliverables, or enforceable obligations. \"down the road\" [VAGUE_COMMITMENT_HORIZON]: Simulates forward motion and goodwill while binding zero calendar dates, deliverables, or enforceable obligations. \"when bandwidth allows\" [VAGUE_COMMITMENT_HORIZON]: Simulates forward motion and goodwill while binding zero calendar dates, deliverables, or enforceable obligations.","counterfactual_translation":"If the actor wanted a binding commitment, they would have named a specific owner, deliverable, and calendar timestamp (e.g., 'I will send the signed decision by Thursday at 3 PM'); choosing elastic wording keeps their cost of delay at zero.","hypotheses":[{"id":"H1","label":"Calibrated Strategic Framing (Optionality & Friction Management)","probability":0.6,"rationale":"Presence of 8 pragmatic micro-signal(s) and 'soft-nonbinding-optionality' commitment profile aligns with deliberate risk/face management."},{"id":"H2","label":"Candid Constraint Reporting Under Social Politeness Norms","probability":0.28,"rationale":"Standard professional etiquette often wraps genuine constraints in softening language to avoid unnecessary friction."},{"id":"H3","label":"Internal Coalition / Principal Buffering","probability":0.12,"rationale":"Wording reflects compromises or unresolved tension behind the scenes on the speaker's own side."}],"diagnostic_probe":{"probe_question_or_action":"Reflect the core claim of S02 back in concrete, quantified terms and ask the speaker to confirm exact dates/owners.","if_h1_true_expect":"They will hedge again, broaden the objection, or resist pinning a concrete threshold.","if_h2_true_expect":"They will show relief at plain talk and collaborate on a concrete, bounded workaround."}}],"omission_expositions":[{"omission_id":"OM01","why_expected":"In a transparent message-or-statement where both sides optimize solely for fast joint execution, 'Absence of Concrete Dates, Metrics, or Acceptance Criteria' would be stated explicitly so neither party misallocates time or expectations. (Commitments or next steps are framed using elastic horizons ('soon', 'explore', 'when bandwidth allows', or unanchored future verbs) without a falsifiable deadline or numeric threshold.)","strategic_function_of_silence":"Silence is an active strategic asset: what is never put in writing cannot be falsified, quoted back as a broken promise, or challenged directly without the questioner bearing the social cost of looking pushy.","hypotheses":[{"id":"H1","label":"Deliberate Optionality Reservation","probability":0.58,"rationale":"Leaving this slot unspecified preserves freedom to pivot once external information arrives."},{"id":"H2","label":"Unresolved Internal Uncertainty or Conflict Avoidance","probability":0.42,"rationale":"The actor either has not resolved this internally yet or fears stating the true number/owner would break the deal immediately."}],"diagnostic_probe":"Surface OM01 neutrally in writing: 'To make sure nothing falls through the cracks on [Absence of Concrete Dates, Metrics, or Acceptance Criteria], what specific target date / owner / threshold should we pencil in right now?'"},{"omission_id":"OM02","why_expected":"In a transparent message-or-statement where both sides optimize solely for fast joint execution, 'Omitted Named Decision-Maker & Real Internal Tradeoff' would be stated explicitly so neither party misallocates time or expectations. (Refusals, delays, or constraints are attributed to passive events or impersonal entities ('policy', 'bandwidth', 'it was decided') while omitting who actually holds veto power and what would change their vote.)","strategic_function_of_silence":"Silence is an active strategic asset: what is never put in writing cannot be falsified, quoted back as a broken promise, or challenged directly without the questioner bearing the social cost of looking pushy.","hypotheses":[{"id":"H1","label":"Deliberate Optionality Reservation","probability":0.58,"rationale":"Leaving this slot unspecified preserves freedom to pivot once external information arrives."},{"id":"H2","label":"Unresolved Internal Uncertainty or Conflict Avoidance","probability":0.42,"rationale":"The actor either has not resolved this internally yet or fears stating the true number/owner would break the deal immediately."}],"diagnostic_probe":"Surface OM02 neutrally in writing: 'To make sure nothing falls through the cracks on [Omitted Named Decision-Maker & Real Internal Tradeoff], what specific target date / owner / threshold should we pencil in right now?'"},{"omission_id":"OM03","why_expected":"In a transparent message-or-statement where both sides optimize solely for fast joint execution, 'One-Way Risk/Effort Ask Without Reciprocal Binding Commitment' would be stated explicitly so neither party misallocates time or expectations. (The actor requests information, action, concession, or patience from the counterpart while keeping their own reciprocal commitment non-binding or unstated.)","strategic_function_of_silence":"Silence is an active strategic asset: what is never put in writing cannot be falsified, quoted back as a broken promise, or challenged directly without the questioner bearing the social cost of looking pushy.","hypotheses":[{"id":"H1","label":"Deliberate Optionality Reservation","probability":0.58,"rationale":"Leaving this slot unspecified preserves freedom to pivot once external information arrives."},{"id":"H2","label":"Unresolved Internal Uncertainty or Conflict Avoidance","probability":0.42,"rationale":"The actor either has not resolved this internally yet or fears stating the true number/owner would break the deal immediately."}],"diagnostic_probe":"Surface OM03 neutrally in writing: 'To make sure nothing falls through the cracks on [One-Way Risk/Effort Ask Without Reciprocal Binding Commitment], what specific target date / owner / threshold should we pencil in right now?'"}],"unresolved_unknowns":[{"question":"Are the stated constraints and elastic timelines driven by genuine internal capacity limits, or by an unstated higher-priority alternative (BATNA hedging)?","severity":"high","domain":"motivation-disambiguation","recommended_probes":[{"operation":"Offer a concrete, zero-friction narrowing of scope tied to a specific calendar date (e.g., 'If we scope this strictly to X, can we lock Tuesday at 2 PM to sign off?').","rationale":"Genuine bandwidth constraints accept narrower scope gratefully; optionality-hedgers invent a second unrelated blocker once the first blocker is solved."}]},{"question":"Does the speaker personally hold decision authority here, or are they acting as an intermediary buffering an unconvinced principal?","severity":"critical","domain":"authority-and-governance","recommended_probes":[{"operation":"Ask a process-mapping question: 'Whose specific criteria need to be satisfied for a green light, and can we include them for 10 minutes on Thursday?'","rationale":"True principals specify concrete criteria immediately; intermediaries guarding turf resist direct principal contact or reveal the real veto holder."}]}]},"unknowns":[{"unknown_id":"unk_62132b227609919284cf909fb398c6b77553bdb13d2ee03a62818990ed627631","revision":1,"previous_revision_digest":null,"scope_digest":"a59b1d6aacc1f143dd7bfafa82b12c6d48fdaf4cb5d9300f43bf774de4788866","question":"Are the stated constraints and elastic timelines driven by genuine internal capacity limits, or by an unstated higher-priority alternative (BATNA hedging)?","status":"open","severity":"high","domain":"motivation-disambiguation","supporting_evidence_ids":["ev_2d30a589624c5b04cad586591552926a34137af07112c75108706bbdb54b2afa","ev_a43802f009f52866585970c91024b30e8cd0809ee7777cf8a8b73c718e8001f4"],"contradicting_evidence_ids":[],"competing_hypotheses":[],"recommended_probes":[{"operation":"Offer a concrete, zero-friction narrowing of scope tied to a specific calendar date (e.g., 'If we scope this strictly to X, can we lock Tuesday at 2 PM to sign off?').","rationale":"Genuine bandwidth constraints accept narrower scope gratefully; optionality-hedgers invent a second unrelated blocker once the first blocker is solved."}],"resolution":null,"mutation_evidence_ids":["ev_2d30a589624c5b04cad586591552926a34137af07112c75108706bbdb54b2afa"],"revision_digest":"d39c7725b3b9ced69a8c7439adc36a0b13423dc099bf921cdf58c863ddf7d97e"},{"unknown_id":"unk_51854518e25505ac738eb6bef4625f93fe5618b786b3da421d185c09d2621d73","revision":1,"previous_revision_digest":null,"scope_digest":"a59b1d6aacc1f143dd7bfafa82b12c6d48fdaf4cb5d9300f43bf774de4788866","question":"Does the speaker personally hold decision authority here, or are they acting as an intermediary buffering an unconvinced principal?","status":"open","severity":"critical","domain":"authority-and-governance","supporting_evidence_ids":["ev_2d30a589624c5b04cad586591552926a34137af07112c75108706bbdb54b2afa","ev_a43802f009f52866585970c91024b30e8cd0809ee7777cf8a8b73c718e8001f4"],"contradicting_evidence_ids":[],"competing_hypotheses":[],"recommended_probes":[{"operation":"Ask a process-mapping question: 'Whose specific criteria need to be satisfied for a green light, and can we include them for 10 minutes on Thursday?'","rationale":"True principals specify concrete criteria immediately; intermediaries guarding turf resist direct principal contact or reveal the real veto holder."}],"resolution":null,"mutation_evidence_ids":["ev_2d30a589624c5b04cad586591552926a34137af07112c75108706bbdb54b2afa"],"revision_digest":"60477e7e453f3b46ea68ec809c9a602a837befb294d3b31d2b0b5fe862f05eef"}],"evidence_records":[{"evidence_id":"ev_a43802f009f52866585970c91024b30e8cd0809ee7777cf8a8b73c718e8001f4","created_at":"2026-11-16T07:50:34.587Z","subject":{"subject_id":"sub_a59b1d6aacc1f143dd7bfafa82b12c6d48fdaf4cb5d9300f43bf774de4788866","name":"message-or-statement-input","kind":"message-or-statement","digest":{"sha256":"a59b1d6aacc1f143dd7bfafa82b12c6d48fdaf4cb5d9300f43bf774de4788866"},"char_length":247,"context":"SaaS vendor account executive responding after a 3-day production outage."},"provider":{"id":"rel-decompiler","name":"REL Pragmatic & Structural Decompiler","version":"1.0.0"},"predicate_type":"rel.decompilation","operation":"decompile_logic_structure","parameters":{"char_length":247},"normalized_result":{"statistics":{"unit_count":2,"omission_count":3,"total_obligations_generated":5,"total_micro_signals":11,"signal_histogram":{"PASSIVE_AGENCY_ERASURE":1,"ADVERSATIVE_PIVOT":2,"EXTERNALIZED_BLOCKER":1,"CONDITIONAL_QUID_PRO_QUO":1,"NUMERIC_OR_TEMPORAL_ANCHOR":2,"VAGUE_COMMITMENT_HORIZON":4},"detected_speakers":[],"adversative_pivot_units":["S01","S02"],"hedged_units":[]},"unit_ids":["S01","S02"],"omission_ids":["OM01","OM02","OM03"]},"confidence":"observed","authority":"verbatim-source","limitations":["Lexical and syntactic micro-signals establish structural framing, not internal subjective intent by themselves."],"locations":[{"kind":"unit-span","unit_id":"S01","start":0,"end":108},{"kind":"unit-span","unit_id":"S02","start":109,"end":247}],"evidence_links":[]},{"evidence_id":"ev_5a5bac2d8d18387e6d1cba8a2f30e2c7795477ea07abdc5cfa5178d4a9ce652b","created_at":"2026-11-16T07:50:34.588Z","subject":{"subject_id":"sub_a59b1d6aacc1f143dd7bfafa82b12c6d48fdaf4cb5d9300f43bf774de4788866","name":"message-or-statement-input","kind":"message-or-statement","digest":{"sha256":"a59b1d6aacc1f143dd7bfafa82b12c6d48fdaf4cb5d9300f43bf774de4788866"},"char_length":247,"context":"SaaS vendor account executive responding after a 3-day production outage."},"provider":{"id":"rel-obligation-engine","name":"REL Obligation Generator","version":"1.0.0"},"predicate_type":"rel.obligation-ledger","operation":"build_logic_obligation_ledger","parameters":{"ledger_id":"obl_ledger_7ad2e3bda78d5e9cdd61c73cf88d0c59c86414d0e0a24cfef4eeaa3ad3a9294f"},"normalized_result":{"ledger_id":"obl_ledger_7ad2e3bda78d5e9cdd61c73cf88d0c59c86414d0e0a24cfef4eeaa3ad3a9294f","total_obligations":5,"sentence_obligations":2,"omission_obligations":3},"confidence":"derived","authority":"structural-pragmatics","limitations":[],"locations":[],"evidence_links":["ev_a43802f009f52866585970c91024b30e8cd0809ee7777cf8a8b73c718e8001f4"]},{"evidence_id":"ev_2d30a589624c5b04cad586591552926a34137af07112c75108706bbdb54b2afa","created_at":"2026-11-16T07:50:34.589Z","subject":{"subject_id":"sub_a59b1d6aacc1f143dd7bfafa82b12c6d48fdaf4cb5d9300f43bf774de4788866","name":"message-or-statement-input","kind":"message-or-statement","digest":{"sha256":"a59b1d6aacc1f143dd7bfafa82b12c6d48fdaf4cb5d9300f43bf774de4788866"},"char_length":247,"context":"SaaS vendor account executive responding after a 3-day production outage."},"provider":{"id":"builtin","name":"Deterministic Pragmatic, Rhetorical & Game-Theoretic Expounder","version":"1.0.0"},"predicate_type":"rel.exposition","operation":"expound_all_obligations","parameters":{"obligation_ledger_id":"obl_ledger_7ad2e3bda78d5e9cdd61c73cf88d0c59c86414d0e0a24cfef4eeaa3ad3a9294f"},"normalized_result":{"global_architecture":{"executive_subtext_translation":"Across 2 addressable units and 3 conspicuous omissions, this message-or-statement is structured to advance a specific positional outcome while minimizing the actor's interpersonal friction and binding downside. Adversative pivots (S01, S02) reveal a classic two-stage framing: initial warmth or validation is deployed as social anesthetic so the post-pivot constraint, refusal, or ask lands without triggering defensive pushback. Notice the commitment asymmetry: where concrete concessions, patience, or actions are sought from the counterpart, the speaker's own future obligations remain protected behind elastic horizons or discretionary escape clauses. Accountability for friction points is deflected away from the speaker via passive agency erasure or off-stage authorities ('policy', 'bandwidth', 'process'), allowing the speaker to preserve rapport while holding a firm line.","core_logical_architecture":"The sequence progresses from assertive-framing-claim in S01 through 2 structured moves (VAGUE_COMMITMENT_HORIZON (4x), ADVERSATIVE_PIVOT (2x), NUMERIC_OR_TEMPORAL_ANCHOR (2x), PASSIVE_AGENCY_ERASURE (1x)). Each unit builds an implicit funnel: establish reasonableness up front, treat background assumptions as settled common ground, soften or externalize constraints, and guide the counterpart toward accepting the speaker's preferred framing as the path of least resistance.","actor_incentive_matrix":[{"actor":"Primary Initiator / Speaker","stated_goal":"Maintain constructive alignment, communicate current status/constraints, and coordinate next steps smoothly.","revealed_incentives":"Maximize optionality, extract clarity or patience from the counterpart at near-zero binding cost, and keep exit ramps open until higher-priority contingencies resolve.","core_fears_or_aversions":"Being locked into an irreversible commitment too early, taking direct personal blame for a refusal/delay, or losing the counterpart as a warm backup option.","leverage_and_batna":"Controls information timing and internal process visibility; relies on ambiguity so the counterpart underestimates their own leverage."},{"actor":"Target Counterpart / Audience","stated_goal":"Obtain clarity, fair reciprocity, predictable commitments, and protection against downside risk.","revealed_incentives":"Convert soft promises into falsifiable dates/numbers and surface the real decision-maker before expending scarce effort or leverage.","core_fears_or_aversions":"Investing resources into an asymmetric arrangement, absorbing hidden risk, or mistaking polite deferrals for genuine buy-in.","leverage_and_batna":"Controls cooperation, execution bandwidth, and willingness to walk away or escalate to decision-owning principals."}],"syllogistic_macro_chain":["Premise 1 (Explicit Frame): Present the speaker's intent as collaborative, reasonable, or governed by objective circumstances.","Premise 2 (Unstated Load-Bearing Assumption): The speaker's framing of constraints, urgency, or scope is treated as fixed reality rather than a negotiable choice.","Premise 3 (Asymmetric Exchange): Maintaining harmony requires the counterpart to accommodate the elastic timeline, request, or boundary now while deferring hard reciprocity.","Operational Conclusion: Secure compliance, patience, or optionality without surrendering unilateral flexibility."],"strategic_response_playbook":[{"strategy_name":"Warm Mirror + Concrete Pin (Convert Elastic Verbs to Dates)","when_to_use":"When you value the relationship but refuse to carry unpriced uncertainty or vague 'circle back' horizons.","exact_move_or_script":"Match their warm tone in clause 1, ignore pre-pivot fluff, and pin a concrete binary date/criterion: 'Completely understand the moving pieces. To plan my side cleanly, let's set [Date] as our decision checkpoint - if we haven't locked [Specific Item] by then, I will allocate that slot elsewhere.'","expected_counter_reaction":"High-intent actors immediately lock the date or counter-propose a nearby real date; low-intent optionality-keepers push back against any hard checkpoint."},{"strategy_name":"Blocker Isolation Test ('If We Solve X, Is Everything Else a Yes?')","when_to_use":"When an externalized blocker, policy, or bandwidth constraint is cited as the reason for refusal or concession.","exact_move_or_script":"Ask: 'If we solve [Stated Blocker X] completely on our end, are we ready to commit today, or is there another factor we should weigh upfront?'","expected_counter_reaction":"Exposes immediately whether [Stated Blocker X] was the real causal constraint or merely a polite proxy objection."}]},"unit_expositions_count":2,"omission_expositions_count":3},"confidence":"derived","authority":"structural-pragmatics","limitations":["Motivational stacks and probability weights represent abductive models over textual and situational evidence; verify high-stakes conclusions using the supplied diagnostic probes."],"locations":[],"evidence_links":["ev_5a5bac2d8d18387e6d1cba8a2f30e2c7795477ea07abdc5cfa5178d4a9ce652b","ev_a43802f009f52866585970c91024b30e8cd0809ee7777cf8a8b73c718e8001f4"]},{"evidence_id":"ev_bb8878b0c1d9db7ca6b0183eb82e1e172971da86b1c603ac01bf82a2414f3ab7","created_at":"2026-11-16T07:50:34.589Z","subject":{"subject_id":"sub_a59b1d6aacc1f143dd7bfafa82b12c6d48fdaf4cb5d9300f43bf774de4788866","name":"message-or-statement-input","kind":"message-or-statement","digest":{"sha256":"a59b1d6aacc1f143dd7bfafa82b12c6d48fdaf4cb5d9300f43bf774de4788866"},"char_length":247,"context":"SaaS vendor account executive responding after a 3-day production outage."},"provider":{"id":"rel-verifier","name":"REL Obligation Coverage Verifier","version":"1.0.0"},"predicate_type":"rel.completion-ledger","operation":"evaluate_exposition_coverage","parameters":{"completion_ledger_id":"ecl_4d2dbaebfbdf6759379bf724047412fe2e22ce702ab78c2f8e8bdb65de934136"},"normalized_result":{"total":5,"pass":5,"fail":0,"unsupported":0,"truncated":0,"unknown":0,"coverage_ratio":1,"complete":true},"confidence":"derived","authority":"structural-pragmatics","limitations":[],"locations":[],"evidence_links":["ev_2d30a589624c5b04cad586591552926a34137af07112c75108706bbdb54b2afa","ev_5a5bac2d8d18387e6d1cba8a2f30e2c7795477ea07abdc5cfa5178d4a9ce652b"]}]};
+
+function esc(s) {
+  return String(s ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function renderBundle(b) {
+  if (!b) return;
+  BUNDLE = b;
+  document.getElementById("subtextBanner").style.display = "block";
+  document.getElementById("mainWorkspace").style.display = "grid";
+
+  const pills = document.getElementById("ledgerPills");
+  const cov = Math.round((b.completion_ledger.summary.coverage_ratio || 0) * 100);
+  pills.innerHTML = [
+    '<span class="pill ok">Coverage: ' + cov + '% (' + b.completion_ledger.summary.pass + '/' + b.completion_ledger.summary.total + ' Obligations)</span>',
+    '<span class="pill">Provider: ' + esc(b.exposition.provider_used.id) + '</span>',
+    '<span class="pill">Completion: ' + esc(b.completion_ledger.ledger_id.slice(0, 18)) + '...</span>',
+    '<span class="pill">Subject: ' + esc(b.subject.subject_id.slice(0, 16)) + '...</span>'
+  ].join("");
+
+  document.getElementById("subtextBody").textContent = b.exposition.global_architecture.executive_subtext_translation;
+
+  const uList = document.getElementById("unitList");
+  uList.innerHTML = b.decompilation.units.map((u, i) => {
+    const chips = u.signals.map(s => '<span class="sig-chip">' + esc(s.code) + ': "' + esc(s.match) + '"</span>').join("");
+    return '<div class="unit-item" data-kind="unit" data-id="' + esc(u.unit_id) + '">' +
+      '<div class="unit-header"><span class="unit-id">' + esc(u.unit_id) + (u.speaker ? ' · ' + esc(u.speaker) : '') + '</span>' +
+      '<span>[' + u.span.start + '..' + u.span.end + '] · ' + esc(u.agency_and_commitment.commitment_profile) + '</span></div>' +
+      '<div>' + esc(u.text) + '</div>' +
+      (chips ? '<div>' + chips + '</div>' : '') +
+      '</div>';
+  }).join("");
+
+  const oList = document.getElementById("omissionList");
+  oList.innerHTML = b.decompilation.conspicuous_omissions.map(o => {
+    return '<div class="unit-item omission" data-kind="omission" data-id="' + esc(o.omission_id) + '">' +
+      '<div class="unit-header"><span class="unit-id">' + esc(o.omission_id) + ' · SILENCE</span><span>' + esc(o.slot) + '</span></div>' +
+      '<div><strong>' + esc(o.title) + '</strong></div>' +
+      '<div style="font-size:12.5px;color:var(--muted);margin-top:4px;">' + esc(o.trigger_observation) + '</div>' +
+      '</div>';
+  }).join("");
+
+  const aMat = document.getElementById("actorMatrix");
+  aMat.innerHTML = (b.exposition.global_architecture.actor_incentive_matrix || []).map(a => {
+    return '<div class="hyp-row">' +
+      '<div style="font-weight:700;color:var(--accent);margin-bottom:6px;">' + esc(a.actor) + '</div>' +
+      '<div style="font-size:13px;"><strong>Stated Goal:</strong> ' + esc(a.stated_goal) + '</div>' +
+      '<div style="font-size:13px;margin-top:4px;"><strong>Revealed Incentives:</strong> ' + esc(a.revealed_incentives) + '</div>' +
+      '<div style="font-size:13px;margin-top:4px;"><strong>Core Fears:</strong> ' + esc(a.core_fears_or_aversions) + '</div>' +
+      '<div style="font-size:13px;margin-top:4px;"><strong>Leverage & BATNA:</strong> ' + esc(a.leverage_and_batna) + '</div>' +
+      '</div>';
+  }).join("");
+
+  const play = document.getElementById("playbookBody");
+  play.innerHTML = (b.exposition.global_architecture.strategic_response_playbook || []).map(p => {
+    return '<div class="probe-box" style="margin-bottom:10px;">' +
+      '<div style="font-weight:700;color:var(--emerald);margin-bottom:4px;">' + esc(p.strategy_name) + '</div>' +
+      '<div style="font-size:12.5px;color:var(--muted);margin-bottom:6px;">When: ' + esc(p.when_to_use) + '</div>' +
+      '<div><strong>Move / Script:</strong> ' + esc(p.exact_move_or_script) + '</div>' +
+      '<div style="margin-top:6px;font-size:12.5px;"><strong>Expected Reaction:</strong> ' + esc(p.expected_counter_reaction) + '</div>' +
+      '</div>';
+  }).join("");
+
+  document.querySelectorAll(".unit-item").forEach(el => {
+    el.addEventListener("click", () => selectItem(el.dataset.kind, el.dataset.id));
+  });
+
+  if (b.decompilation.units.length > 0) {
+    selectItem("unit", b.decompilation.units[0].unit_id);
+  }
+}
+
+function selectItem(kind, id) {
+  document.querySelectorAll(".unit-item").forEach(el => {
+    el.classList.toggle("active", el.dataset.id === id);
+  });
+  const titleEl = document.getElementById("inspectorTitle");
+  const bodyEl = document.getElementById("inspectorBody");
+
+  if (kind === "omission") {
+    const om = BUNDLE.decompilation.conspicuous_omissions.find(x => x.omission_id === id);
+    const exp = BUNDLE.exposition.omission_expositions.find(x => x.omission_id === id);
+    titleEl.textContent = id + " - Conspicuous Omission Dossier";
+    bodyEl.innerHTML =
+      '<div class="dossier-section"><div class="label">Omitted Variable</div><div><strong>' + esc(om.title) + '</strong> (' + esc(om.slot) + ')</div></div>' +
+      '<div class="dossier-section"><div class="label">Why Expected in a Candid Baseline</div><div>' + esc(exp.why_expected) + '</div></div>' +
+      '<div class="dossier-section"><div class="label">Strategic Benefit of Silence</div><div>' + esc(exp.strategic_function_of_silence) + '</div></div>' +
+      '<div class="dossier-section"><div class="label">Competing Hypotheses</div>' + renderHypotheses(exp.hypotheses) + '</div>' +
+      '<div class="dossier-section"><div class="label">Diagnostic Probe to Surface It</div><div class="probe-box">' + esc(exp.diagnostic_probe) + '</div></div>';
+    return;
+  }
+
+  const u = BUNDLE.decompilation.units.find(x => x.unit_id === id);
+  const exp = BUNDLE.exposition.unit_expositions.find(x => x.unit_id === id);
+  titleEl.textContent = id + " - Complete Logic & Motivation Dossier";
+  bodyEl.innerHTML =
+    '<div class="dossier-section"><div class="label">Verbatim Unit</div><div style="font-size:15px;font-weight:500;">"' + esc(u.text) + '"</div></div>' +
+    '<div class="dossier-section"><div class="label">Literal Surface vs. Operational Function</div>' +
+      '<div style="color:var(--muted);font-size:13px;margin-bottom:6px;"><strong>Surface:</strong> ' + esc(exp.literal_surface) + '</div>' +
+      '<div><strong>Operational Job:</strong> ' + esc(exp.operational_function) + '</div></div>' +
+    '<div class="dossier-section"><div class="label">Underlying Logic Chain</div><ul class="tight">' +
+      (exp.logic_chain || []).map(x => '<li>' + esc(x) + '</li>').join("") + '</ul></div>' +
+    '<div class="dossier-section"><div class="label">Hidden / Load-Bearing Premises</div><ul class="tight">' +
+      (exp.hidden_premises || []).map(x => '<li>' + esc(x) + '</li>').join("") + '</ul></div>' +
+    '<div class="dossier-section"><div class="label">Four-Layer Motivational Stack</div><div class="motive-grid">' +
+      '<div class="motive-box"><strong>1. Surface Optics</strong>' + esc(exp.motivational_stack.surface_motive) + '</div>' +
+      '<div class="motive-box"><strong>2. Tactical Leverage</strong>' + esc(exp.motivational_stack.tactical_motive) + '</div>' +
+      '<div class="motive-box"><strong>3. Core Self-Interest</strong>' + esc(exp.motivational_stack.core_self_interest) + '</div>' +
+      '<div class="motive-box"><strong>4. Ego / Face Shield</strong>' + esc(exp.motivational_stack.ego_or_face_protection) + '</div>' +
+    '</div></div>' +
+    '<div class="dossier-section"><div class="label">Word-Choice Forensics</div><div>' + esc(exp.word_choice_forensics) + '</div></div>' +
+    '<div class="dossier-section"><div class="label">Counterfactual Candid Translation</div><div style="color:var(--amber);">' + esc(exp.counterfactual_translation) + '</div></div>' +
+    '<div class="dossier-section"><div class="label">Competing Motivational Hypotheses</div>' + renderHypotheses(exp.hypotheses) + '</div>' +
+    '<div class="dossier-section"><div class="label">Falsification / Diagnostic Probe</div><div class="probe-box">' +
+      '<div><strong>Probe:</strong> ' + esc(exp.diagnostic_probe?.probe_question_or_action || "") + '</div>' +
+      '<div style="font-size:12.5px;margin-top:6px;"><strong>If H1:</strong> ' + esc(exp.diagnostic_probe?.if_h1_true_expect || "") + '</div>' +
+      '<div style="font-size:12.5px;margin-top:4px;"><strong>If H2:</strong> ' + esc(exp.diagnostic_probe?.if_h2_true_expect || "") + '</div>' +
+    '</div></div>';
+}
+
+function renderHypotheses(list) {
+  return (list || []).map(h => {
+    const pct = typeof h.probability === "number" ? Math.round(h.probability * 100) : 50;
+    return '<div class="hyp-row">' +
+      '<div style="display:flex;justify-content:space-between;font-size:13px;font-weight:650;"><span>' + esc(h.id) + ': ' + esc(h.label) + '</span><span>' + pct + '%</span></div>' +
+      '<div class="hyp-bar-bg"><div class="hyp-bar-fill" style="width:' + pct + '%"></div></div>' +
+      '<div style="font-size:12.5px;color:var(--muted);">' + esc(h.rationale) + '</div>' +
+    '</div>';
+  }).join("");
+}
+
+if (BUNDLE) renderBundle(BUNDLE);
+
+const btn = document.getElementById("analyzeBtn");
+if (btn) {
+  btn.addEventListener("click", async () => {
+    const text = document.getElementById("inputMessage").value.trim();
+    if (!text) return;
+    btn.disabled = true;
+    btn.textContent = "Decompiling Logic...";
+    try {
+      const res = await fetch("/api/analyze", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          text,
+          context: document.getElementById("inputContext").value.trim(),
+          provider: document.getElementById("inputProvider").value
+        })
+      });
+      const data = await res.json();
+      if (data.error) alert(data.error);
+      else renderBundle(data);
+    } catch (e) {
+      alert("Analysis failed: " + e.message);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Reverse Engineer Logic";
+    }
+  });
+}
+</script>
+</body>
+</html>

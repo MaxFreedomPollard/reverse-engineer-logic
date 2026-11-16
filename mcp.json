@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "rel": {
+      "command": "node",
+      "args": ["bin/rel.mjs", "mcp"]
+    }
+  }
+}
