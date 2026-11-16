@@ -307,6 +307,7 @@ export class RelSession {
         if (!this.subject || !this.obligationLedger) {
           throw new Error("No open subject. Call open_subject or expound_situation_or_message first.");
         }
+        this.lastBundle = null;
         const recordedIds = [];
         for (const ue of args.unit_expositions || []) {
           this.unitExpositions.set(ue.unit_id, ue);
